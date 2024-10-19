@@ -23,7 +23,7 @@ interface CardProps {
 
 const ActivityCard: React.FC<CardProps> = ({ name, description, image }) => {
     return (
-        <div className='transition max-w-sm h-[200px] border rounded-xl relative flex overflow-hidden group hover:drop-shadow hover:cursor-pointer'>
+        <div className='transition max-w-sm h-[200px] border rounded-xl relative flex overflow-hidden group hover:drop-shadow hover:cursor-pointer font-poppins'>
             
             <div className='justify-end flex flex-col gap-2 absolute z-50 inset-0 p-4 bg-gradient-to-t from-black/60 to-transparent'>
                 <div className='translate-y-[35px] group-hover:translate-y-0 transition duration-300'>

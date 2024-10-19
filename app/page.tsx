@@ -8,15 +8,15 @@ import Activities from "@/components/Activities";
 export default function Home() {
   return (
    <div className="w-full">
-    <div className="">
+    <div>
       
 
       {/* Hero Section */}
       <div className="font-poppins flex flex-col">
-        <div className="w-full h-[700px] overflow-clip relative">
+        <div className="w-full h-full sm:h-[500px] md:h-[700px] 2xl:h-[1000px] overflow-clip relative">
 
           {/* Nav Bar */}
-          <div className="navbar sticky flex text-white py-6 px-10 justify-between font-poppins z-50 w-full">
+          <div className="navbar sticky flex text-white py-6 px-10 justify-between font-roboto font-bold z-50 w-full">
             <h1 className="font-roboto text-3xl">Shinzo Park</h1>
             <div className="flex gap-10 place-items-center">
               <Link href={"/"}>Home</Link>
@@ -37,16 +37,17 @@ export default function Home() {
               <div className="w-[45%] text-justify">
                 Enjoy luxurious accommodations and exclusive access to our thrilling amusement park and endless activities. Book your stay today for the ultimate tropical getaway!
               </div>
+              {/* Book now button */}
               <div className="w-fit">
                 <Button variant={"outline"} className="flex bg-transparent px-8 py-6 gap-2 rounded-full">
-                  Book now 
+                  Book now
                   <ArrowRight />
                 </Button>
               </div>
             </div>
           </div>
 
-          <div className="bg-black absolute top-0 z-0">
+          <div className="bg-black absolute top-0 z-0 w-full 2xl:-translate-y-40">
             <Image alt="main-image" src={"/ride-cropped.jpg"} width={2000} height={0} className="w-full opacity-50" />
           </div>
         </div>
