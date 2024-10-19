@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "The best theme park in Maldives!",
 };
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--font-poppins" })
+const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins" })
 const roboto = Roboto({ subsets: ["latin"], weight: ["900"], variable: "--font-roboto" })
 // (≥o≤)
 export default function RootLayout({
