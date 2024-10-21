@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins, Roboto } from "next/font/google"
 import "./globals.css";
+import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "Shinzo Park",
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${roboto.variable} antialiased bg-slate-100`}
       >
+        {/* <NavBar /> */}
         {children}
       </body>
     </html>

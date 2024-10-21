@@ -1,10 +1,12 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 // pages/index.tsx
 
 import { useState } from 'react';
 
 export default function RegisterForm() {
+  const router = useRouter()
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordMatched, setIsPasswordMatched] = useState(true);
@@ -36,7 +38,9 @@ export default function RegisterForm() {
           <p className="mb-8">
             SOmeothin
           </p>
-          <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-bold">
+          <button
+          onClick={() => router.push("/login")}
+          className="bg-white text-blue-600 px-4 py-2 rounded-lg font-bold">
             Have An Account
           </button>
         </div>
