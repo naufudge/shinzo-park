@@ -39,9 +39,9 @@ export default function Home() {
               </div>
               {/* Book now button */}
               <div className="w-fit">
-                <Button variant={"outline"} className="flex bg-transparent px-8 py-6 gap-2 rounded-full">
+                <Button variant={"outline"} className="flex bg-transparent group px-8 py-6 gap-2 transition-all duration-500 ease-in-out rounded-full">
                   Book now
-                  <ArrowRight />
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
