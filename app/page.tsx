@@ -16,7 +16,7 @@ export default function Home() {
         <div className="w-full h-full sm:h-[500px] md:h-[700px] 2xl:h-[1000px] overflow-clip relative">
 
           {/* Nav Bar */}
-          <div className="navbar sticky flex text-white py-6 px-10 justify-between font-roboto font-bold z-50 w-full">
+          <div className="navbar sticky flex text-white py-6 px-[100px] justify-between z-50 w-full">
             <h1 className="font-roboto text-3xl">Shinzo Park</h1>
             <div className="flex gap-10 place-items-center">
               <Link href={"/"}>Home</Link>
@@ -31,7 +31,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="absolute z-50 top-[40%] ml-12">
+          <div className="absolute z-50 top-[40%] mx-[100px]">
             <div className="flex flex-col gap-4 font-poppins text-white">
               <div className="font-semibold text-[3rem] drop-shadow-md">Welcome to Shinzo Park! </div>
               <div className="w-[45%] text-justify">
