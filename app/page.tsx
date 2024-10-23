@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from 'lucide-react';
 import PackagesSection from "@/components/PackagesSection";
 import Activities from "@/components/Activities";
+import NavBar from "@/components/NavBar";
 
 export default function Home() {
   return (
@@ -16,20 +17,7 @@ export default function Home() {
         <div className="w-full h-full sm:h-[500px] md:h-[700px] 2xl:h-[1000px] overflow-clip relative">
 
           {/* Nav Bar */}
-          <div className="navbar sticky flex text-white py-6 px-[100px] justify-between z-50 w-full">
-            <h1 className="font-roboto text-3xl">Shinzo Park</h1>
-            <div className="flex gap-10 place-items-center">
-              <Link href={"/"}>Home</Link>
-              <Link href={"/"}>Tickets</Link>
-              <Link href={"/"}>About Us</Link>
-              
-
-              <div className="flex gap-6">
-                <Button className="rounded-full bg-transparent" variant={"outline"}>Book Now</Button>
-                <Button className="rounded-full" variant={"secondary"}>Login</Button>
-              </div>
-            </div>
-          </div>
+          <NavBar />
 
           <div className="absolute z-50 top-[40%] mx-[100px]">
             <div className="flex flex-col gap-4 font-poppins text-white">

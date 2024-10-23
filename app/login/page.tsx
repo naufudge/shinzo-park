@@ -1,8 +1,10 @@
 'use client'
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SignInSignUp() {
+  const router = useRouter()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -62,7 +64,9 @@ export default function SignInSignUp() {
         <div className="w-1/2 bg-gray-300 flex flex-col justify-center items-center text-center p-10">
           <h2 className="text-xl mb-4">Welcome to login</h2>
           <p className="mb-6">Don't have an account?</p>
-          <button className="w-full bg-red-900 p-3 rounded-lg text-white font-bold">
+          <button
+          onClick={() => router.push("/signup")}
+          className="w-full bg-red-900 p-3 rounded-lg text-white font-bold">
             Sign up
           </button>
         </div>
