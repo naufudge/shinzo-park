@@ -26,7 +26,7 @@ export default function SignInSignUp() {
       <div className="bg-white w-[600px] rounded-xl shadow-lg flex overflow-hidden"> 
         
         {/* Sign In Section */}
-        <div className="w-1/2 bg-red-500 text-white p-10">
+        <div className="w-1/2 bg-sky-950 text-white p-10">
         <h2 className="text-3xl font-bold mb-6">Sign in</h2>
           <div className="mb-4">
             <label htmlFor="username" className="block mb-2">
@@ -55,7 +55,7 @@ export default function SignInSignUp() {
               className="w-full p-3 rounded-lg bg-gray-300 text-black"  
             />
           </div>
-          <button className="w-full bg-red-900 p-3 rounded-lg text-white font-bold">
+          <button className="w-full bg-yellow-500 p-3 rounded-lg text-white font-bold">
             Sign in
           </button>
         </div>
@@ -66,7 +66,7 @@ export default function SignInSignUp() {
           <p className="mb-6">Don't have an account?</p>
           <button
           onClick={() => router.push("/signup")}
-          className="w-full bg-red-900 p-3 rounded-lg text-white font-bold">
+          className="w-full bg-yellow-500 p-3 rounded-lg text-white font-bold">
             Sign up
           </button>
         </div>

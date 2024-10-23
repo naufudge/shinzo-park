@@ -30,7 +30,7 @@ export default function RegisterForm() {
     <div className="flex h-screen items-center justify-center bg-[#B2EBF2]">
       <div className="bg-white w-[800px] rounded-xl shadow-lg flex overflow-hidden">
         {/* Information Section */}
-        <div className="w-1/2 bg-blue-600 text-white p-10">
+        <div className="w-1/2 bg-sky-950 text-white p-10">
           <h2 className="text-3xl font-bold mb-6">Idk somekind of img</h2>
           <p className="mb-6">
             Something
@@ -40,14 +40,14 @@ export default function RegisterForm() {
           </p>
           <button
           onClick={() => router.push("/login")}
-          className="bg-white text-blue-600 px-4 py-2 rounded-lg font-bold">
+          className="bg-amber-500 text-white px-4 py-2 rounded-lg font-bold">
             Have An Account
           </button>
         </div>
 
         {/* Register Form Section */}
         <div className="w-1/2 bg-gray-100 p-10">
-          <h2 className="text-2xl font-bold mb-6 text-blue-600">Register here</h2>
+          <h2 className="text-2xl font-bold mb-6 text-amber-500">Register here</h2>
           <form className="space-y-4">
             <div className="flex gap-4">
               <input
@@ -97,12 +97,12 @@ export default function RegisterForm() {
             <div className="flex items-center">
               <input type="checkbox" id="terms" className="mr-2" />
               <label htmlFor="terms" className="text-sm">
-                I agree to the <a href="#" className="text-blue-600">Terms and Conditions of being a baka</a>
+                I agree to the <a href="#" className="text-amber-500">Terms and Conditions of being a baka</a>
               </label>
             </div>
             <button
               type="submit"
-              className="bg-blue-600 w-full p-3 rounded-lg text-white font-bold"
+              className="bg-amber-500 w-full p-3 rounded-lg text-white font-bold"
             >
               Register
             </button>
