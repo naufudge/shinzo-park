@@ -52,9 +52,10 @@ const page: React.FC = () => {
     <Layout className='h-screen font-poppins'>
         {/* <Header>header</Header> */}
         <Layout>
+            {/* Side Bar */}
             <Sider color='#fff' className='h-screen bg-stone-100 text-[13px]'>
                 <div className='items-center flex w-full justify-center'>
-                    <h1 className='h-full flex text-[1.5rem] font-roboto font-bold mt-10'>Shinzo Park</h1>
+                    <h1 className='h-full flex text-[1.5rem] font-roboto font-bold mt-10 tracking-wide'>DhonVeli</h1>
                 </div>
                 <div className='flex flex-col gap-3 px-3 mt-10'>
                     {menuItems.map((item, index) => (
@@ -68,6 +69,7 @@ const page: React.FC = () => {
                     ))}
                 </div>
             </Sider>
+
             <Content className='p-10 rounded-2xl z-50 bg-white my-4 mr-4 shadow overflow-y-scroll'>
                 <motion.div>
                     <AnimatePresence mode='wait'>

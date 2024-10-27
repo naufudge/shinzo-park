@@ -6,7 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Banknote, DoorOpen, Key, Star } from "lucide-react"
+import { DoorOpen, Globe, Star, Users } from "lucide-react"
   
 import Image from 'next/image'
 import React from 'react'
@@ -37,42 +37,57 @@ const Home = () => {
             </div>
         </div> 
         <div className='mt-14 flex flex-col gap-10'>
-            {/* Cards row */}
+            {/* First Section */}
             <div className='grid grid-cols-4 gap-10'>
                 {/* Number of Visitors  */}
-                <DashboardCard title="Visitors" icon={<DoorOpen color="orange" />} content="105" />
+                <DashboardCard title="Island Visitors" icon={<DoorOpen color="orange" />} content="50" />
 
-                {/* Number of ??? */}
-                <DashboardCard title="Check-ins" icon={<Key color="blue" />} content="50" />
+                {/* Number of website visitors */}
+                <DashboardCard title="Website Visitors" icon={<Globe color="blue" />} content="435" />
                 
                 {/* Rating */}
                 <DashboardCard title="Rating" icon={<Star color="red" />} content="4.2 / 5" />
                 
-                {/* Revenue */}
-                <DashboardCard title="Rating" icon={<Banknote color="green" />} content="4.2 / 5" />
+                {/* Total Users */}
+                <DashboardCard title="Total Users" icon={<Users color="green" />} content="520" />
 
             </div>
+
+            {/* Second Section */}
             <div className="grid grid-cols-2 gap-10">
+                {/* Latest Reviews */}
                 <div className="flex flex-col gap-5">
                     <h2 className="font-roboto font-semibold text-xl">Latest Reviews</h2>
-                    {reviews.map((review, index) => (
+                    { reviews.map((review, index) => (
                         <Card key={index} className="px-2">
                             <CardHeader className="mb-0 pb-2">
                                 <div className="flex justify-between place-items-center">
                                     <div className="flex gap-2 place-items-center">
+                                        {/* User's name */}
                                         <div className="font-semibold">{review.user}</div>
-                                        <div className="">
-                                            <Star fill="yellow" stroke="none" />
+                                        {/* Rating (Stars) */}
+                                        <div className="flex">
+                                            {[...Array(review.rating)].map((e, i) => (
+                                                <Star key={i} fill="orange" stroke="none" />
+                                            ))}
                                         </div>
                                     </div>
+                                    {/* Review Date & Time */}
                                     <div className="text-[12px] italic text-stone-500">{review.datetime}</div>
                                 </div>
                             </CardHeader>
                             <CardContent>
+                                {/* The Review */}
                                 <p className="italic text-stone-600 font-serif text-justify">"{review.review}"</p>
                             </CardContent>
                         </Card>
                     ))}
+                </div>
+
+                {/* Island Visitors Chart - Male & Female */}
+                <div className="flex flex-col gap-5">
+                    {/* <h2 className="font-roboto font-semibold text-xl">Island Visitors</h2> */}
+                    {/* CHART HERE! */}
                 </div>
             </div>
         </div>
