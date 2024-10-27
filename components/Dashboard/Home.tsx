@@ -12,9 +12,14 @@ import Image from 'next/image'
 import React from 'react'
 import DashboardCard from "./DashboardCard"
 
+const reviews = [
+    {user: "Aahil", rating: 5, datetime: "19 March 2024 - 13:00", review: "We paid mostly for the stunning location at this place. The service was decent, and while the food wasn't mind-blowing, the views totally made up for it. There are three restaurants on-site, but 'Oceans' is the one to hit up—it's the best of the bunch. We also went scuba diving, which was awesome, just make sure not to eat too much beforehand."},
+    {user: "Axwa", rating: 4, datetime: "20 March 2024 - 15:00", review: "Superb experience. Such a beautiful country. At Centara hotel you must try the Nurse shark snorkeling course which costs around 160USD per person extra. We enjoyed the Karaoke and pubs with the All inclusive plan which provided us all three meals and unlimited liquor at all the bars and restaurants. Best recommend."},
+]
+
 const Home = () => {
   return (
-    <div>    
+    <div className="">    
         <div className='flex flex-row gap-4'>
             <div className='w-14 h-14'>
                 {/* Profile Picture */}
@@ -31,7 +36,7 @@ const Home = () => {
                 <div>Here's an overview of the island.</div>
             </div>
         </div> 
-        <div className='mt-14'>
+        <div className='mt-14 flex flex-col gap-10'>
             {/* Cards row */}
             <div className='grid grid-cols-4 gap-10'>
                 {/* Number of Visitors  */}
@@ -46,8 +51,29 @@ const Home = () => {
                 {/* Revenue */}
                 <DashboardCard title="Rating" icon={<Banknote color="green" />} content="4.2 / 5" />
 
-                
-                
+            </div>
+            <div className="grid grid-cols-2 gap-10">
+                <div className="flex flex-col gap-5">
+                    <h2 className="font-roboto font-semibold text-xl">Latest Reviews</h2>
+                    {reviews.map((review, index) => (
+                        <Card key={index} className="px-2">
+                            <CardHeader className="mb-0 pb-2">
+                                <div className="flex justify-between place-items-center">
+                                    <div className="flex gap-2 place-items-center">
+                                        <div className="font-semibold">{review.user}</div>
+                                        <div className="">
+                                            <Star fill="yellow" stroke="none" />
+                                        </div>
+                                    </div>
+                                    <div className="text-[12px] italic text-stone-500">{review.datetime}</div>
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="italic text-stone-600 font-serif text-justify">"{review.review}"</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
             </div>
         </div>
     </div>

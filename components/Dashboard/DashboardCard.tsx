@@ -12,9 +12,10 @@ interface DashboardCardTypes {
     title: string;
     icon: React.JSX.Element;
     content: string;
+    className?: string;
 }
 
-const DashboardCard: React.FC<DashboardCardTypes> = ({ title, icon, content }) => {
+const DashboardCard: React.FC<DashboardCardTypes> = ({ title, icon, content, className }) => {
   return (
     <Card>
         <CardHeader>
