@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme, Card } from 'antd';
-import { Building, Waves, Gamepad2, House, Clapperboard } from 'lucide-react';
+import { Building, Waves, Gamepad2, House, Clapperboard, Users } from 'lucide-react';
 import { motion, AnimatePresence } from "framer-motion";
 import Image from 'next/image';
 import Home from '@/components/Dashboard/Home';
@@ -19,6 +19,7 @@ import Hotel from '@/components/Dashboard/Hotel';
 import WaterPark from '@/components/Dashboard/WaterPark';
 import Arcade from '@/components/Dashboard/Arcade';
 import Cinema from '@/components/Dashboard/Cinema';
+import UsersSection from '@/components/Dashboard/Users';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -27,7 +28,8 @@ const menuItems = [
     "Hotel",
     "Water Park",
     "Arcade",
-    "Cinema"
+    "Cinema",
+    "Users"
 ]
 
 const icons = [
@@ -35,7 +37,8 @@ const icons = [
     <Building className="h-4 w-4" />,
     <Waves className="h-4 w-4" />,
     <Gamepad2 className="h-4 w-4" />,
-    <Clapperboard className='h-4 w-4' />
+    <Clapperboard className='h-4 w-4' />,
+    <Users className='h-4 w-4' />
 ]
 
 const page: React.FC = () => {
@@ -127,6 +130,17 @@ const page: React.FC = () => {
                                 transition={{ duration: 0.3 }}
                             >
                                 <Cinema />
+                            </motion.div>
+                        : currentMenu === "Users" ?
+                            <motion.div
+                                key={currentMenu}
+                                variants={pageVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                transition={{ duration: 0.3 }}
+                            >
+                                <UsersSection />
                             </motion.div>
                         :
                         null

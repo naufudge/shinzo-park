@@ -81,3 +81,12 @@ body {
   background-color: rgba(255, 255, 255, 0.025);
   backdrop-filter: blur(8px);
 }
+
+.dashboard-main-title {
+  @apply font-roboto font-bold text-2xl
+}
+
+.dashboard-sub-title {
+  @apply font-roboto font-semibold text-xl
+}
+
