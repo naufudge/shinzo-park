@@ -1,3 +1,6 @@
+import Image from 'next/image'
+import React from 'react'
+import DashboardCard from "@/components/Dashboard/DashboardCard"
 import {
     Card,
     CardContent,
@@ -7,15 +10,34 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { DoorOpen, Globe, Star, Users } from "lucide-react"
-  
-import Image from 'next/image'
-import React from 'react'
-import DashboardCard from "./DashboardCard"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
+
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 const reviews = [
     {user: "Aahil", rating: 5, datetime: "19 March 2024 - 13:00", review: "We paid mostly for the stunning location at this place. The service was decent, and while the food wasn't mind-blowing, the views totally made up for it. There are three restaurants on-site, but 'Oceans' is the one to hit up—it's the best of the bunch. We also went scuba diving, which was awesome, just make sure not to eat too much beforehand."},
     {user: "Axwa", rating: 4, datetime: "20 March 2024 - 15:00", review: "Superb experience. Such a beautiful country. At Centara hotel you must try the Nurse shark snorkeling course which costs around 160USD per person extra. We enjoyed the Karaoke and pubs with the All inclusive plan which provided us all three meals and unlimited liquor at all the bars and restaurants. Best recommend."},
 ]
+
+const chartData = [
+    { month: "January", male: 186, female: 80 },
+    { month: "February", male: 305, female: 200 },
+    { month: "March", male: 237, female: 120 },
+    { month: "April", male: 73, female: 190 },
+    { month: "May", male: 209, female: 130 },
+    { month: "June", male: 214, female: 140 },
+]
+
+const chartConfig = {
+    male: {
+      label: "Male",
+      color: "#fc6600",
+    },
+    female: {
+      label: "Female",
+      color: "#f9a602",
+    },
+} satisfies ChartConfig
 
 const Home = () => {
   return (
@@ -86,8 +108,29 @@ const Home = () => {
 
                 {/* Island Visitors Chart - Male & Female */}
                 <div className="flex flex-col gap-5">
-                    {/* <h2 className="font-roboto font-semibold text-xl">Island Visitors</h2> */}
+                    <h2 className="font-roboto font-semibold text-xl">Island Visitors</h2>
+
                     {/* CHART HERE! */}
+                    <Card>
+                        <CardContent className="flex p-4 place-items-end justify-end">
+                            <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                                <BarChart accessibilityLayer data={chartData}>
+                                    {/* <ChartLegend content={<ChartLegendContent />} /> */}
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                    dataKey="month"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                    tickFormatter={(value) => value.slice(0, 3)}
+                                    />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <Bar dataKey="male" fill="var(--color-male)" radius={4} />
+                                    <Bar dataKey="female" fill="var(--color-female)" radius={4} />
+                                </BarChart>
+                            </ChartContainer>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </div>
