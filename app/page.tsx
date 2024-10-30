@@ -20,17 +20,22 @@ export default function Home() {
           <NavBar />
 
           <div className="absolute z-50 top-[40%] mx-[100px]">
-            <div className="flex flex-col gap-4 font-poppins text-white">
+            <div className="flex flex-col gap-3 font-poppins text-white">
               <div className="font-semibold text-[3rem] drop-shadow-md">Welcome to Shinzo Park! </div>
-              <div className="w-[45%] text-justify">
-                Enjoy luxurious accommodations and exclusive access to our thrilling amusement park and endless activities. Book your stay today for the ultimate tropical getaway!
-              </div>
-              {/* Book now button */}
-              <div className="w-fit">
-                <Button variant={"outline"} className="flex bg-transparent group px-8 py-6 gap-2 transition-all duration-500 ease-in-out rounded-full">
-                  Book now
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+              <div className="flex flex-col gap-8">
+                <div className="w-[45%] text-justify">
+                  Enjoy luxurious accommodations and exclusive access to our thrilling amusement park and endless activities. Book your stay today for the ultimate tropical getaway!
+                </div>
+
+                {/* Book now button */}
+                <div className="w-fit">
+                  <Link href={"/booking"}>
+                    <Button variant={"outline"} className="flex bg-transparent group px-8 py-6 gap-2 transition-all duration-500 ease-in-out rounded-full">
+                      Book now
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
