@@ -4,12 +4,15 @@ import DashboardCard from "@/components/Dashboard/DashboardCard";
 import {
     Card,
     CardContent,
+    CardDescription,
+    CardFooter,
     CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Users, DollarSign, Ticket, Star, Activity } from "lucide-react";
 
 const reviews = [
-    { name: 'Elgius', stars: 5, datetime: "19 March 2024 - 13:00", review: "The slides were so fast I think I left my soul behind! My hair is still recovering from the wind. 10/10 would scream again." },
+    { name: 'Elgius', stars: 5, datetime: "19 March 2024 - 13:00", review: "The slides were so fast I think I left my soul behind! My hair is still recovering from the wind. 10/10 would scream again as if my emulator wont work again" },
     { name: 'Axwa', stars: 4, datetime: "20 March 2024 - 15:00", review: "I accidentally went down the kiddie slide, and the lifeguard looked at me like I was 5. Best day of my life." }
 ];
 
