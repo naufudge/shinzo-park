@@ -6,6 +6,15 @@ import {
     CardContent,
     CardHeader,
 } from "@/components/ui/card";
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+    ChartLegend,
+    ChartLegendContent
+} from "@/components/ui/chart";
+import { Label, Pie, PieChart } from "recharts";
 import { Users, DollarSign, Ticket, Star, Activity } from "lucide-react";
 
 const reviews = [
@@ -24,8 +33,8 @@ const ticketSales = [
 ];
 
 const visitorDemographics = [
-    { label: 'Adults', value: '60%' },
-    { label: 'Children', value: '40%' },
+    { label: 'Adults', value: 60, fill: "#fc6600" },
+    { label: 'Children', value: 40, fill: "#f9a602" },
 ];
 
 // List of water park rides with prices
@@ -39,19 +48,29 @@ const rides = [
 // General entry fee
 const entryFee = 200; // default entry fee
 
+const chartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    adults: {
+      label: "Adults",
+      color: "hsl(var(--chart-1))",
+    },
+    children: {
+      label: "Children",
+      color: "hsl(var(--chart-2))",
+    },
+} satisfies ChartConfig
+
 const WaterPark = () => {
+    const totalVisitors = React.useMemo(() => {
+        return visitorDemographics.reduce((acc, curr) => acc + curr.value, 0)
+    }, [])
+
     return (
         <div className="p-6 space-y-8 font-poppins">
             <div className="flex flex-row gap-4 mb-8">
-                <div className="w-14 h-14">
-                    <Image
-                        alt="water-park-logo"
-                        src="/water-park-logo.jpg"
-                        className="rounded-full w-fit brightness-105"
-                        width={1000}
-                        height={1000}
-                    />
-                </div>
+                {/* Title */}
                 <div className="flex flex-col gap-1">
                     <h1 className="font-roboto font-bold text-2xl">Water Park</h1>
                     <p className="font-poppins">Here's an overview of the park's performance.</p>
@@ -60,10 +79,12 @@ const WaterPark = () => {
 
             {/* Overview Cards */}
             <div className="grid grid-cols-4 gap-10 mb-10">
+                <DashboardCard title="Current Ticket Price" icon={<Ticket color="orange" />} content="150" />
+
                 <DashboardCard title="Total Visitors" icon={<Users color="blue" />} content="200" />
                 <DashboardCard title="Revenue" icon={<DollarSign color="green" />} content="MVR 5000" />
-                <DashboardCard title="Tickets Sold" icon={<Ticket color="orange" />} content="150" />
                 <DashboardCard title="Rating" icon={<Star color="red" />} content="4.5 / 5" />
+
             </div>
 
             {/* Additional Sections */}
@@ -115,9 +136,61 @@ const WaterPark = () => {
                 {/* Visitor Demographics */}
                 <div className="flex flex-col gap-5">
                     <h2 className="font-roboto font-semibold text-xl">Visitor Demographics</h2>
-                    {visitorDemographics.map((demographic, index) => (
-                        <DashboardCard key={index} title={demographic.label} icon={<Users color="blue" />} content={demographic.value} />
-                    ))}
+                    <Card className=''>
+                        <CardContent>
+                            <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[350px]'>
+                                <PieChart>
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={<ChartTooltipContent hideLabel />}
+                                    />
+                                    <Pie
+                                        data={visitorDemographics}
+                                        dataKey={"value"}
+                                        nameKey={"label"}
+                                        innerRadius={70}
+                                        strokeWidth={10}
+                                        legendType={'circle'}
+                                    >
+                                        <Label
+                                            content={({viewBox}) => {
+                                                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                                    return(
+                                                        <text
+                                                            x={viewBox.cx}
+                                                            y={viewBox.cy}
+                                                            textAnchor='middle'
+                                                            dominantBaseline={"middle"}
+                                                        >
+                                                            <tspan
+                                                                x={viewBox.cx}
+                                                                y={viewBox.cy}
+                                                                className='fill-foreground text-[2.5rem] font-bold'
+                                                            >
+                                                                {totalVisitors.toLocaleString()}
+                                                            </tspan>
+                                                            <tspan
+                                                                x={viewBox.cx}
+                                                                y={(viewBox.cy || 0) + 24}
+                                                                className="fill-muted-foreground"
+                                                            >
+                                                                Visitors
+                                                            </tspan>
+                                                        </text>
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    </Pie>
+
+                                    <ChartLegend
+                                        content={<ChartLegendContent nameKey="label" />}
+                                        className="-translate-y-2 flex-wrap gap-4 [&>*]:basis-1/4 [&>*]:justify-center"
+                                    />
+                                </PieChart>
+                            </ChartContainer>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 

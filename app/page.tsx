@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import PackagesSection from "@/components/PackagesSection";
 import Activities from "@/components/Activities";
 import NavBar from "@/components/NavBar";
+import ReviewsSection from "@/components/ReviewsSection";
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
 
           <div className="absolute z-50 top-[40%] mx-[100px]">
             <div className="flex flex-col gap-3 font-poppins text-white">
-              <div className="font-semibold text-[3rem] drop-shadow-md">Welcome to Shinzo Park! </div>
+              <div className="font-semibold text-[3rem] drop-shadow-md">Welcome to DhonVeli! </div>
               <div className="flex flex-col gap-8">
                 <div className="w-[45%] text-justify">
                   Enjoy luxurious accommodations and exclusive access to our thrilling amusement park and endless activities. Book your stay today for the ultimate tropical getaway!
@@ -47,7 +48,8 @@ export default function Home() {
       
         <div className="mt-[50px]">
           <Activities />
-          {/* <PackagesSection /> */}
+          <PackagesSection />
+          <ReviewsSection />
         </div>
       
       </div>

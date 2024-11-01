@@ -11,7 +11,7 @@ const NavBar = () => {
 
     return (
         <div className="navbar sticky flex text-white py-6 px-[100px] justify-between z-50 w-full">
-            <h1 className="font-roboto text-3xl">Shinzo Park</h1>
+            <h1 className="font-roboto font-bold text-3xl">DhonVeli</h1>
             <div className="flex gap-10 place-items-center">
                 <Link href={"/"}>Home</Link>
                 <Link href={"/"}>Tickets</Link>
