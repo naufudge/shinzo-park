@@ -10,8 +10,8 @@ const NavBar = () => {
     const router = useRouter()
 
     return (
-        <div className="navbar sticky flex text-white py-6 px-[100px] justify-between z-50 w-full">
-            <h1 className="font-roboto font-bold text-3xl">DhonVeli</h1>
+        <div className="navbar sticky top-0 flex py-6 px-[100px] justify-between z-[100] w-full">
+            <Link href={"/"}><h1 className="font-roboto font-bold text-3xl">DhonVeli</h1></Link>
             <div className="flex gap-10 place-items-center">
                 <Link href={"/"}>Home</Link>
                 <Link href={"/"}>Tickets</Link>
@@ -19,20 +19,19 @@ const NavBar = () => {
                 
 
                 <div className="flex gap-6">
-                <Button
-                className="rounded-full bg-transparent"
-                variant={"outline"}
-                >
-                    Book Now
-                </Button>
+                    <Button
+                    className="rounded-full bg-transparent"
+                    variant={"outline"}
+                    >
+                        Book Now
+                    </Button>
 
-                <Button
-                className="rounded-full"
-                variant={"secondary"}
-                onClick={() => {}}
-                >
-                   <Link href={"/login"}>Login</Link>
-                </Button>
+                    <Button
+                    className="rounded-full px-5"
+                    variant={"default"}
+                    >
+                    <Link href={"/login"}>Login</Link>
+                    </Button>
                 </div>
             </div>
         </div>

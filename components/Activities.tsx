@@ -4,7 +4,7 @@ import * as motion from "framer-motion/client"
 
 const Activities = () => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center sm:mx-[100px] my-8'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center sm:mx-[100px]'>
         <div className="col-span-full mb-6 flex flex-col text-center gap-2">
             <h1 className='font-poppins font-bold text-center text-3xl'>Explore our <span className='text-orange-700'>Activities</span>!</h1>
             <div className='text-opacity-50 italic text-sm'>Where the fun is never ending!</div>
@@ -12,8 +12,8 @@ const Activities = () => {
         <ActivityCard className='col-span-1' name='Water Park' description='This is a water park' image='/water-park.jpg' imageClass='h-full' />
         <ActivityCard className='col-span-2' name='Joy Rides' description='This is a joy ride' image='/ride.jpg' />
         <ActivityCard className='col-span-1' name='Arcade' description='This is a Arcade' image='/arcade.jpg' imageClass='h-full' />
-        <ActivityCard className='col-span-2' name='Joy Rides' description='This is a joy ride' image='/arcade.jpg' />
-        <ActivityCard className='col-span-1' name='Cinema' description='This is a joy ride' image='/water-park.jpg' imageClass='h-full' />
+        <ActivityCard className='col-span-2' name='Cinema' description='This is a joy ride' image='/cinema.jpg' />
+        <ActivityCard className='col-span-1' name='Beachside' description='This is a joy ride' image='/arcade.jpg' imageClass='h-full' />
         <ActivityCard className='col-span-1' name='Joy Rides' description='This is a joy ride' image='/ride.jpg' />
     </div>
   )

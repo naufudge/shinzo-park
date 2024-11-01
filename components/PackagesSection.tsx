@@ -9,7 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import Image from 'next/image'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 
 const Packages = [
     {name: "Adventure Package", image: "/adventure.jpg", days: "1 Day", perks: ["With full water park access", "Free Ferry Ticket"]},
@@ -35,7 +35,10 @@ const PackagesSection = () => {
                 opacity: 1,
             }}
             viewport={{
-                margin: "-300px",
+                margin: "-150px",
+            }}
+            transition={{
+                duration: 1,
             }}
         >
             {Packages.map((item, index) => (

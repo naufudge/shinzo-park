@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${roboto.variable} antialiased bg-slate-100`}
+        className={`${poppins.variable} ${roboto.variable} antialiased bg-slate-100 h-full`}
       >
-        {/* <NavBar /> */}
+          <NavBar />
         {children}
       </body>
     </html>
