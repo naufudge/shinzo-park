@@ -10,9 +10,9 @@ const NavBar = () => {
     const router = useRouter()
 
     return (
-        <div className="navbar drop-shadow-md flex sticky top-5 py-5 px-[50px] justify-between z-[100] mx-[50px] rounded-full">
-            <Link href={"/"}><h1 className="font-roboto font-bold text-3xl">DhonVeli</h1></Link>
-            <div className="flex gap-10 place-items-center">
+        <div className="navbar drop-shadow-md flex py-5 px-[50px] justify-between z-[100] mx-[50px] rounded-full">
+            <Link href={"/"}><h1 className="font-poppins font-bold text-3xl">DhonVeli</h1></Link>
+            <div className="flex gap-10 place-items-center font-poppins">
                 <Link href={"/"}>Home</Link>
                 <Link href={"/"}>Tickets</Link>
                 <Link href={"/"}>About Us</Link>

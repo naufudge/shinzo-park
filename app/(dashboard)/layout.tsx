@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Poppins, Roboto } from "next/font/google"
-import "./globals.css";
+import "@/app/globals.css";
 import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins" })
 const roboto = Roboto({ subsets: ["latin"], weight: ["500", "700", "900"], variable: "--font-roboto" })
 // (≥o≤)
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,7 +22,6 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${roboto.variable} antialiased bg-slate-100 h-full`}
       >
-          <NavBar />
         {children}
       </body>
     </html>

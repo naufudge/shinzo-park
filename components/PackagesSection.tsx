@@ -38,7 +38,7 @@ const PackagesSection = () => {
                 margin: "-150px",
             }}
             transition={{
-                duration: 1,
+                duration: 0.75,
             }}
         >
             {Packages.map((item, index) => (
