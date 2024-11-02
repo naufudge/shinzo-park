@@ -1,11 +1,21 @@
 'use client'
 
+import Image from "next/image";
+
 export default function ResortBooking() {
+
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
-          <h1 className="text-3xl font-bold text-center mb-4">Room Booking</h1>
-          <p className="text-center mb-8 text-gray-500">Experience something new every moment</p>
+
+      <div className="h-screen bg-gray-100 flex flex-col items-center justify-center overflow-x-clip">
+        <div className="w-screen h-[900px] 2xl:h-[1100px] overflow-clip">
+          <h1 className="absolute mx-auto top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 drop-shadow-md text-[4.5rem] font-bold text-stone-50">
+            Room Booking
+          </h1>
+          <Image alt="hotel" className="w-full h-full object-cover blur-sm 2xl:-translate-y-[70px]" src={"/hotel-view.jpg"} width={2000} height={0} />
+        </div>
+        <div className="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full -translate-y-28">
+          
+          {/* <p className="text-center mb-8 text-gray-500">Experience something new every moment</p> */}
   
           <form className="space-y-6">
             <div className="flex gap-4">

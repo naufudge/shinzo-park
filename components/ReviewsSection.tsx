@@ -27,23 +27,24 @@ const reviewChartData = [
 const chartConfig = {
   ratings: {
     label: "Ratings",
-    color: "#fc6600",
+    color: "#fca404",
   },
 } satisfies ChartConfig
 
 const ReviewsSection = () => {
   return (
-    <div className='m-[100px]'>
+    // <div className='m-[100px]'>
+    <div className='w-full my-[100px]'>
         <div className="mb-10 flex flex-col text-center gap-2">
             <h1 className='font-poppins font-bold text-center text-3xl'>Customer <span className='text-orange-700'>Reviews</span></h1>
             <div className='text-opacity-50 italic text-sm'>See what our customers are saying!</div>
         </div>
     
-        <div className='grid grid-cols-2 p-5'>
+        <div className='grid grid-cols-2 p-5 bg-white px-[100px] py-10'>
             <div className='flex place-items-center justify-center'>
               <Card className=''>
                 <CardContent className='p-5 px-10 min-w-[350px] min-h-[250px]'>
-                  <div className='font-roboto font-bold text-[4rem] text-center'>4.5</div>
+                  <div className='font-roboto font-bold text-[4rem] text-center'>4.5 ★</div>
                   <div>
                     <ChartContainer config={chartConfig}>
                       <BarChart

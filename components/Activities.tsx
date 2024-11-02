@@ -13,7 +13,7 @@ const Activities = () => {
         <ActivityCard className='col-span-2' name='Joy Rides' description='This is a joy ride' image='/ride.jpg' />
         <ActivityCard className='col-span-1' name='Arcade' description='This is a Arcade' image='/arcade.jpg' imageClass='h-full' />
         <ActivityCard className='col-span-2' name='Cinema' description='This is a joy ride' image='/cinema.jpg' />
-        <ActivityCard className='col-span-1' name='Beachside' description='This is a joy ride' image='/arcade.jpg' imageClass='h-full' />
+        <ActivityCard className='col-span-1' name='Beachside' description='This is a joy ride' image='/surf.jpg' imageClass='h-full' />
         <ActivityCard className='col-span-1' name='Joy Rides' description='This is a joy ride' image='/ride.jpg' />
     </div>
   )

@@ -10,7 +10,7 @@ const NavBar = () => {
     const router = useRouter()
 
     return (
-        <div className="navbar sticky top-0 flex py-6 px-[100px] justify-between z-[100] w-full">
+        <div className="navbar drop-shadow-md flex sticky top-5 py-5 px-[50px] justify-between z-[100] mx-[50px] rounded-full">
             <Link href={"/"}><h1 className="font-roboto font-bold text-3xl">DhonVeli</h1></Link>
             <div className="flex gap-10 place-items-center">
                 <Link href={"/"}>Home</Link>
@@ -23,7 +23,7 @@ const NavBar = () => {
                     className="rounded-full bg-transparent"
                     variant={"outline"}
                     >
-                        Book Now
+                        <Link href={"/booking"}>Book Now</Link>
                     </Button>
 
                     <Button
