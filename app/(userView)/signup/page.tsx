@@ -1,15 +1,25 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
-// pages/index.tsx
-
 import { useState } from 'react';
+import bcrypt from 'bcryptjs';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 export default function RegisterForm() {
   const router = useRouter()
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isPasswordMatched, setIsPasswordMatched] = useState(true);
+  const [isPasswordMatched, setIsPasswordMatched] = useState<boolean>();
+
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    loyalty_points: 0,
+    role: "normal",
+  })
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -17,14 +27,44 @@ export default function RegisterForm() {
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
-    checkPasswordMatch(password, e.target.value);
+    let currentPassword = e.target.value
+    setConfirmPassword(currentPassword);
+    checkPasswordMatch(password, currentPassword);
   };
 
   const checkPasswordMatch = (password: string, confirmPassword: string) => {
-    setIsPasswordMatched(password === confirmPassword);
-    // alert("password not same")
+    if (password === "" || confirmPassword === "") {
+      setIsPasswordMatched(false);
+      return false;
+    }
+
+    const matchResult = password === confirmPassword;
+    setIsPasswordMatched(matchResult);
+
+    if (matchResult === true) {
+      const saltRounds = 10;
+  
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) throw err;
+        console.log('Hashed password:', hash);
+        setUserData({...userData, password: hash});
+      })
+    }
+
+    return matchResult;
   };
+
+  const handleRegisterButton = async () => {
+    const matched = checkPasswordMatch(password, confirmPassword)
+    if (matched === false) return;
+
+    console.log(userData)
+    if (userData.username.length > 3 && userData.email.includes("@")) {
+      await axios.post("https://dhonveli-api.up.railway.app/users/", userData)
+    }
+    // await axios.post("https://dhonveli-api.up.railway.app/users/")
+    
+  }
 
   return (
     <div className="flex h-screen items-center justify-center bg-[#B2EBF2]">
@@ -52,26 +92,28 @@ export default function RegisterForm() {
             <div className="flex gap-4">
               <input
                 type="text"
-                placeholder="First Name"
-                className="w-1/2 p-3 border rounded-lg focus:outline-none"
+                placeholder="Username"
+                className="w-full p-3 border rounded-lg focus:outline-none"
+                onChange={(e) => setUserData({...userData, username: e.target.value})}
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder="Last Name"
                 className="w-1/2 p-3 border rounded-lg focus:outline-none"
-              />
+              /> */}
             </div>
             <input
               type="email"
               placeholder="Your Email"
               className="w-full p-3 border rounded-lg focus:outline-none"
+              onChange={(e) => setUserData({...userData, email: e.target.value})}
             />
             <div className="flex gap-4">
               <div className="relative w-full">
                 <input
                   type="password"
                   placeholder="Password"
-                  className={`w-full p-3 border rounded-lg focus:outline-none ${!isPasswordMatched ? 'border-red-500' : ''}`}
+                  className={`w-full p-3 border rounded-lg focus:outline-none ${isPasswordMatched === false ? 'border-red-500' : ''}`}
                   value={password}
                   onChange={handlePasswordChange}
                 />
@@ -80,17 +122,17 @@ export default function RegisterForm() {
                 <input
                   type="password"
                   placeholder="Confirm Password"
-                  className={`w-full p-3 border rounded-lg focus:outline-none ${!isPasswordMatched ? 'border-red-500' : ''}`}
+                  className={`w-full p-3 border rounded-lg focus:outline-none ${isPasswordMatched === false ? 'border-red-500' : ''}`}
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
                 />
-                {!isPasswordMatched 
-                // && 
-                // (
-                //   <span className="absolute text-xs text-red-500 top-3 right-2">
-                //     Wrong Password
-                //   </span>
-                // )
+                {isPasswordMatched === false
+                && 
+                (
+                  <span className="absolute text-xs text-red-500 bottom-0 left-0">
+                    Wrong Password
+                  </span>
+                )
                 }
               </div>
             </div>
@@ -100,12 +142,14 @@ export default function RegisterForm() {
                 I agree to the <a href="#" className="text-amber-500">Terms and Conditions of being a baka</a>
               </label>
             </div>
-            <button
-              type="submit"
-              className="bg-amber-500 w-full p-3 rounded-lg text-white font-bold"
+            
+            <Button
+              type='button'
+              className="bg-amber-500 w-full p-3 rounded-lg text-white font-bold hover:bg-amber-500/90"
+              onClick={() => handleRegisterButton()}
             >
               Register
-            </button>
+            </Button>
           </form>
         </div>
       </div>
