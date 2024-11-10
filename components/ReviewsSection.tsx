@@ -10,6 +10,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Card, CardContent } from '@/components/ui/card'
+import * as motion from "framer-motion/client"
 
 const reviews = [
   {user: "Aahil", rating: 5, datetime: "19 March 2024 - 13:00", review: "We paid mostly for the stunning location at this place. The service was decent, and while the food wasn't mind-blowing, the views totally made up for it. There are three restaurants on-site, but 'Oceans' is the one to hit up—it's the best of the bunch. We also went scuba diving, which was awesome, just make sure not to eat too much beforehand."},
@@ -33,15 +34,28 @@ const chartConfig = {
 
 const ReviewsSection = () => {
   return (
-    // <div className='m-[100px]'>
     <div className='w-full my-[100px]'>
         <div className="mb-10 flex flex-col text-center gap-2">
             <h1 className='font-poppins font-bold text-center text-3xl'>Customer <span className='text-orange-700'>Reviews</span></h1>
             <div className='text-opacity-50 italic text-sm'>See what our customers are saying!</div>
         </div>
-    
-        <div className='grid grid-cols-2 p-5 bg-white px-[100px] py-10'>
-            <div className='flex place-items-center justify-center'>
+        
+        <motion.div
+          className='grid grid-cols-2 p-5 bg-white px-[100px] py-10'
+          initial={{
+            opacity: 0,
+          }}
+          whileInView={{
+              opacity: 1,
+          }}
+          viewport={{
+              margin: "-150px",
+          }}
+          transition={{
+              duration: 0.75,
+          }}
+        >
+          <div className='flex place-items-center justify-center'>
               <Card className=''>
                 <CardContent className='p-5 px-10 min-w-[350px] min-h-[250px]'>
                   <div className='font-roboto font-bold text-[4rem] text-center'>4.5 ★</div>
@@ -77,7 +91,9 @@ const ReviewsSection = () => {
                 <ReviewCard key={index} user={review.user} datetime={review.datetime} rating={review.rating} review={review.review}  />
               ))}
             </div>
-        </div>
+        </motion.div>
+
+        
     </div>
   )
 }
