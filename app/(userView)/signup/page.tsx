@@ -48,6 +48,8 @@ export default function RegisterForm() {
         if (err) throw err;
         console.log('Hashed password:', hash);
         setUserData({...userData, password: hash});
+        // const result = bcrypt.compare(password, hash)
+        // console.log(result)
       })
     }
 
@@ -60,10 +62,11 @@ export default function RegisterForm() {
 
     console.log(userData)
     if (userData.username.length > 3 && userData.email.includes("@")) {
-      await axios.post("https://dhonveli-api.up.railway.app/users/", userData)
+      // const resopnse = await axios.post("https://dhonveli-api.up.railway.app/users/", userData)
+      const result = await bcrypt.compare(password, userData.password)
+      console.log(result)
+      // Do something based on the response
     }
-    // await axios.post("https://dhonveli-api.up.railway.app/users/")
-    
   }
 
   return (
