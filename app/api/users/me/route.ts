@@ -14,8 +14,6 @@ export async function GET(request: NextRequest) {
         }
         const tokenData = await getDataFromToken(token)
 
-        console.log(tokenData)
-
         const response = NextResponse.json({
             message: "Token Verified Successfully!",
             success: true,
