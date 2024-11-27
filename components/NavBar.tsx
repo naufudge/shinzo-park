@@ -6,17 +6,16 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
 import { JwtPayload } from 'jsonwebtoken';
+import Image from 'next/image';
+import { ChevronDown, LayoutDashboard, LogOut, User } from 'lucide-react';
+import { TokenGetResponseType } from '@/types/MyTypes';
 
-type TokenGetResponseType = {
-    message: string,
-    success: boolean,
-    token: JwtPayload | null
-}
+
 
 const NavBar = () => {
     const [loggedIn, setLoggedIn] = useState(false)
     const [tokenData, setTokenData] = useState<JwtPayload | null>()
-    const router = useRouter()
+    const [userDropdown, setUserDropdown] = useState(false)
 
     useEffect(() => {
         const getToken = async () => {
@@ -37,7 +36,7 @@ const NavBar = () => {
     const handleLogOut = async () => {
         try {
             const response = await axios.get("/api/users/logout")
-            router.refresh()
+            window.location.reload()
             return response
         } catch (error: any) {
             console.log(error.message)
@@ -61,14 +60,53 @@ const NavBar = () => {
                         >
                             <Link href={"/booking"}>Book Now</Link>
                         </Button>
+                        {loggedIn ?
+                            <div className='place-items-center flex'>
+                                <div className='flex place-items-center gap-2'>
+                                    <div className='w-[30px]'><Image alt={"pp"} src={"/pp.png"} width={1000} height={0} /></div>
+                                    <ChevronDown
+                                    className={`w-[20px] hover:cursor-pointer ${userDropdown ? "rotate-180" : ""} transition-all duration-200`}
+                                    onClick={() => setUserDropdown(!userDropdown)}
+                                    />
+                                </div>
+                                <div className={`absolute z-[105] translate-y-[6rem] bg-white shadow-xl text-sm rounded-lg ${userDropdown ? "opacity-100" : "opacity-0"} transition-all duration-200`}>
+                                    <div
+                                    className='w-full p-3 hover:bg-stone-200 hover:cursor-pointer rounded-lg'
+                                    onClick={() => setUserDropdown(!userDropdown)}
+                                    >
+                                        <Link href={"/profile"} className='flex place-items-center gap-4'><User className='w-[20px]' />Profile</Link>
+                                    </div>
 
-                        <Button
-                        className="rounded-full px-5"
-                        variant={"default"}
-                        onClick={loggedIn ? handleLogOut : () => {}}
-                        >
-                            <Link href={loggedIn ? "" : "/login"}>{loggedIn ? "Logout" : "Login"}</Link>
-                        </Button>
+                                    {tokenData?.role != "normal" &&
+                                        <div
+                                        className='w-full p-3 hover:bg-stone-200 hover:cursor-pointer rounded-lg'
+                                        onClick={() => setUserDropdown(!userDropdown)}
+                                        >
+                                            <Link href={"/dashboard"} className='flex place-items-center gap-4'><LayoutDashboard className='w-[20px]' />Dashboard</Link>
+                                        </div>
+                                    }
+
+                                    <div 
+                                    className='flex place-items-center gap-4 w-full p-3 text-red-700 hover:bg-stone-200 hover:cursor-pointer rounded-lg'
+                                    onClick={() => {
+                                        setUserDropdown(!userDropdown)
+                                        handleLogOut()
+                                    }}
+                                    >
+                                        <LogOut className='w-[20px]' />Logout
+                                    </div>
+                                </div>
+                            </div>
+                        :
+                            <Button
+                            className="rounded-full px-5"
+                            variant={"default"}
+                            onClick={loggedIn ? handleLogOut : () => {}}
+                            >
+                                {/* <Link href={loggedIn ? "" : "/login"}>{loggedIn ? "Logout" : "Login"}</Link> */}
+                                <Link href={"/login"}>Login</Link>
+                            </Button>
+                        }
                     </div>
                 </div>
             </div>

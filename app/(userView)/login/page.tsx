@@ -22,7 +22,7 @@ export default function SignInSignUp() {
         console.log("Password is invalid")
         // Do something here please
 
-      } else if (response.status === 200) router.refresh()
+      } else if (response.status === 200) window.location.reload()
 
     } catch (error: any) {
       console.log(error.message)

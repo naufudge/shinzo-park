@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken"
+
 export type UserType = {
     id: number,
     username: string,
@@ -13,4 +15,10 @@ export type UserTokenType = {
     email: string,
     loyalty_points: number,
     role: string
+}
+
+export type TokenGetResponseType = {
+    message: string,
+    success: boolean,
+    token: JwtPayload | null
 }

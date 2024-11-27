@@ -11,10 +11,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 
 const bookingSchema = z.object({
@@ -46,7 +62,7 @@ export default function ResortBooking() {
 
     return (
       <div className="h-screen bg-gray-100 flex flex-col overflow-x-clip">
-        <div className='2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl'>
+        <div className='relative 2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl'>
           <div className="font-poppins absolute mx-auto 2xl:top-[40%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-center">
             <h1 className="drop-shadow-md text-[5rem] font-semibold font-dancing text-stone-50">
               Room Booking
@@ -56,7 +72,7 @@ export default function ResortBooking() {
           <Image alt="ride" className="w-full h-full object-cover bg-black blur-sm opacity-80 rounded-2xl" src={"/hotel-view.jpg"} width={2000} height={0} />
         </div>
 
-        <div className="flex items-center justify-center w-full">
+        <div className="grid grid-cols-3 mx-10 gap-5">
           {/* Room booking form */}
           {/* <div className="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
             <form className="space-y-6">
@@ -183,7 +199,7 @@ export default function ResortBooking() {
             </form>
           </div> */}
 
-          <div className="bg-white p-10 rounded-lg shadow-md max-w-4xl w-full mb-10">
+          <div className="bg-white p-10 col-span-2 rounded-lg shadow-md max-w-4xl w-full font-poppins mb-10">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div className="grid grid-cols-2 gap-8">
@@ -214,9 +230,146 @@ export default function ResortBooking() {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="roomType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Room Type</FormLabel>
+                      <div></div>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select room type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        
+                        <SelectContent>
+                          <SelectItem value="family">Family Suite</SelectItem>
+                          <SelectItem value="queen">Queen Bedroom</SelectItem>
+                        </SelectContent>
+                        <FormMessage />
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="numGuests"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Number of Guests</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="Number of Guests" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="fromDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>Arrival Date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl className="">
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="end">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        When you will be arriving at the island.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="toDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>Departure Date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl className="">
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="end">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        When you will be leaving the island.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
               </div>
+              <Button type="submit">Book now!</Button>
               </form>
             </Form>
+          </div>
+
+          <div className="bg-white p-10 col-span-1 max-w-4xl h-fit rounded-lg shadow-md font-poppins mb-10">
+            <h1 className="text-xl mb-2">Price</h1>
+            <div className="font-semibold text-3xl">MVR 0.00</div>
+            <br />
+            <Button>Pay now!</Button>
           </div>
         
         
