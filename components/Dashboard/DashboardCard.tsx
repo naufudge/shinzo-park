@@ -21,7 +21,7 @@ const DashboardCard: React.FC<DashboardCardTypes> = ({ title, icon, content, cla
         <CardHeader>
             <div className="flex justify-between w-full">
                 <h3 className="italic">{title}</h3>
-                <div>{icon}</div>
+                <div className=''>{icon}</div>
             </div>
         </CardHeader>
         <CardContent><div className="font-bold text-xl">{content}</div></CardContent>

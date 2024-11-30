@@ -15,7 +15,7 @@ import { Building, Waves, Gamepad2, House, Clapperboard, Users } from 'lucide-re
 import { motion, AnimatePresence } from "framer-motion";
 import Image from 'next/image';
 import Home from '@/components/Dashboard/Home';
-import Hotel from '@/components/Dashboard/Hotel';
+import HotelDashboard from '@/components/Dashboard/Hotel';
 import WaterPark from '@/components/Dashboard/WaterPark';
 import Arcade from '@/components/Dashboard/Arcade';
 import Cinema from '@/components/Dashboard/Cinema';
@@ -96,7 +96,7 @@ const page: React.FC = () => {
                                 exit="exit"
                                 transition={{ duration: 0.3 }}
                             >
-                                <Hotel />
+                                <HotelDashboard />
                             </motion.div>
                         : currentMenu === "Water Park" ?
                             <motion.div
