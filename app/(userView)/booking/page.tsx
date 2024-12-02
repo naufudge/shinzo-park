@@ -31,6 +31,9 @@ import { z } from "zod"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { HotelRoomType } from "@/types/MyTypes";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const bookingSchema = z.object({
@@ -43,6 +46,20 @@ const bookingSchema = z.object({
 })
 
 export default function ResortBooking() {
+    const [roomTypes, setRoomTypes] = useState<HotelRoomType[]>()
+
+    useEffect(() => {
+      async function getRoomTypes() {
+        try {
+          const response = await axios.get("/api/hotels/viewRoomTypes")
+          if (response.data.success) setRoomTypes(response.data.roomTypes)
+        } catch (error: any) {
+          console.log(error.message)
+        }
+      }
+      if (!roomTypes) getRoomTypes();
+    }, [roomTypes])
+
     const form = useForm<z.infer<typeof bookingSchema>>({
       resolver: zodResolver(bookingSchema),
       defaultValues: {
@@ -74,130 +91,6 @@ export default function ResortBooking() {
 
         <div className="grid grid-cols-3 mx-10 gap-5">
           {/* Room booking form */}
-          {/* <div className="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
-            <form className="space-y-6">
-              <div className="flex gap-4">
-                <div className="w-1/2">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">Name</label>
-                  <div className="flex gap-4">
-                    <input
-                      type="text"
-                      placeholder="First Name"
-                      className="w-1/2 p-2 border rounded-md focus:outline-none"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      className="w-1/2 p-2 border rounded-md focus:outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/2">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">E-mail *</label>
-                  <input
-                    type="email"
-                    placeholder="example@example.com"
-                    className="w-full p-2 border rounded-md focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="w-1/2">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">Room Type *</label>
-                  <select className="w-full p-2 border rounded-md focus:outline-none">
-                    <option>Please Select</option>
-                    <option>Single Room</option>
-                    <option>Double Room</option>
-                    <option>Deluxe Room</option>
-                  </select>
-                </div>
-                <div className="w-1/2">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">Number of Guests *</label>
-                  <input
-                    type="number"
-                    placeholder="e.g., 2"
-                    className="w-full p-2 border rounded-md focus:outline-none"
-                  />
-                </div>
-              </div>
-    
-              <div className="flex gap-4">
-                <div className="w-1/2">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">Arrival Date & Time *</label>
-                  <input
-                    type="date"
-                    className="w-full p-2 border rounded-md focus:outline-none"
-                  />
-                </div>
-                <div className="w-1/2 flex gap-4">
-                  <input
-                    type="time"
-                    className="w-full p-2 border rounded-md focus:outline-none"
-                  />
-                  <select className="w-1/4 p-2 border rounded-md focus:outline-none">
-                    <option>AM</option>
-                    <option>PM</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="w-1/3">
-                  <label className="block mb-2 text-sm font-medium text-gray-600">Departure Date *</label>
-                  <select className="w-full p-2 border rounded-md focus:outline-none">
-                    <option>Please select a month</option>
-                    <option>January</option>
-                    <option>February</option>
-                  </select>
-                </div>
-                <div className="w-1/3">
-                  <select className="w-full p-2 mt-6 border rounded-md focus:outline-none">
-                    <option>Please select a day</option>
-                    <option>1</option>
-                    <option>2</option>
-                  </select>
-                </div>
-                <div className="w-1/3">
-                  <select className="w-full p-2 mt-6 border rounded-md focus:outline-none">
-                    <option>Please select a year</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                  </select>
-                </div>
-              </div>
-    
-              <div className="flex items-center gap-6">
-                <p className="block text-sm font-medium text-gray-600">Free Pickup? *</p>
-                <div>
-                  <input type="radio" id="yes" name="pickup" className="mr-2" />
-                  <label htmlFor="yes">Yes Please! - Pick me up on arrival</label>
-                </div>
-                <div>
-                  <input type="radio" id="no" name="pickup" className="mr-2" />
-                  <label htmlFor="no">No Thanks - I'll make my own way there</label>
-                </div>
-              </div>
-    
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-600">Special Requests</label>
-                <textarea
-                  rows={4}
-                  className="w-full p-2 border rounded-md focus:outline-none"
-                  placeholder="Any additional information..."
-                ></textarea>
-              </div>
-    
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white font-bold p-3 rounded-md hover:bg-green-600 transition duration-300"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div> */}
 
           <div className="bg-white p-10 col-span-2 rounded-lg shadow-md max-w-4xl w-full font-poppins mb-10">
             <Form {...form}>
@@ -246,8 +139,9 @@ export default function ResortBooking() {
                         </FormControl>
                         
                         <SelectContent>
-                          <SelectItem value="family">Family Suite</SelectItem>
-                          <SelectItem value="queen">Queen Bedroom</SelectItem>
+                          {roomTypes?.map((roomType, index) => (
+                            <SelectItem key={index} value={roomType.id.toString()}>{roomType.name}</SelectItem>
+                          ))}
                         </SelectContent>
                         <FormMessage />
                       </Select>
@@ -274,7 +168,7 @@ export default function ResortBooking() {
                   name="fromDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col w-full">
-                      <FormLabel>Arrival Date</FormLabel>
+                      <FormLabel>Check-in</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl className="">
@@ -319,7 +213,7 @@ export default function ResortBooking() {
                   name="toDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col w-full">
-                      <FormLabel>Departure Date</FormLabel>
+                      <FormLabel>Check-out</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl className="">

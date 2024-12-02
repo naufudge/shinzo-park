@@ -4,15 +4,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { number, z } from "zod";
 
 interface RequestBody {
-    hotel_id: number;
-    roomsData: any[]
+    room_type_id: number;
+    roomTypeDetails: any
 }
 
 export async function POST(request: NextRequest) {
     try {
         const reqBody: RequestBody = await request.json()
-        
-        const response = await axios.post(`https://dhonveli-api.up.railway.app/room_types/`, reqBody)
+        const { room_type_id, roomTypeDetails } = reqBody
+
+        const response = await axios.patch(`https://dhonveli-api.up.railway.app/room_types/${room_type_id}`, roomTypeDetails)
 
         return NextResponse.json({
             success: true

@@ -41,6 +41,16 @@ export type HotelRoomType = {
     hotel: HotelType
 }
 
+export type HotelRoom = {
+    id: number,
+    room_number: number,
+    occupied: boolean,
+    booking_id: number | null,
+    booking: null,
+    room_type_id: number
+    room_type: HotelRoomType
+}
+
 export const hotelFormSchema = z.object({
     name: z.string().nullable(),
     rooms: z.array(
@@ -57,4 +67,10 @@ export const roomTypeUpdateFormSchema = z.object({
     name: z.string().min(3),
     price: z.coerce.number().gt(0).multipleOf(0.01),
     bed_count: z.coerce.number().gt(0)
+})
+
+export const roomAddingFormSchema = z.object({
+    room_number: z.coerce.number().gt(0),
+    occupied: z.boolean().default(false),
+    room_type_id: z.string()
 })

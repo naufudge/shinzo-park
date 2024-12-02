@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { HotelRoomType, HotelType, hotelFormSchema } from '@/types/MyTypes';
+import { HotelRoom, HotelRoomType, HotelType, hotelFormSchema } from '@/types/MyTypes';
 import axios from 'axios';
 import {
     Select,
@@ -30,7 +30,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";  
 import { Button } from '@/components/ui/button';
-import { Bed, DoorOpen, Plus, Trash } from 'lucide-react';
+import { BadgeDollarSign, Bed, DoorClosed, Pencil, Plus, Tag, Trash } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -55,21 +55,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from 'zod';
 import DashboardCard from '@/components/Dashboard/DashboardCard';
+import AddRoom from './HotelComponents/AddRoom';
+import RoomsTable from './HotelComponents/RoomsTable';
+import EditRoomType from './HotelComponents/EditRoomType';
 
 
 const HotelDashboard = () => {
-    const [hotels, setHotels] = useState<HotelType[]>()
-    const [selectedHotel, setSelectedHotel] = useState<HotelType>()
-    
-    const [hotelRoomTypes, setHotelRoomTypes] = useState<HotelRoomType[] | null>(null)
-    const [selectedHotelRoomTypes, setSelectedHotelRoomTypes] = useState<HotelRoomType[] | null>()
+    const [hotels, setHotels] = useState<HotelType[]>();
+    const [hotelRooms, setHotelRooms] = useState<HotelRoom[]>();
 
-    const [addingHotel, setAddingHotel] = useState("")
+    const [selectedHotel, setSelectedHotel] = useState<HotelType>();
+    const [selectedHotelRooms, setSelectedHotelRooms] = useState<HotelRoom[]>();
+    
+    const [hotelRoomTypes, setHotelRoomTypes] = useState<HotelRoomType[] | null>(null);
+    const [selectedHotelRoomTypes, setSelectedHotelRoomTypes] = useState<HotelRoomType[] | null>();
+
+    const [addingHotel, setAddingHotel] = useState("");
+    
+    const [addRoomIsOpen, setAddRoomIsOpen] = useState(false);
+    
     const [addRoomTypesIsOpen, setAddRoomTypesIsOpen] = useState(false);
+    const [editRoomTypeIsOpen, setEditRoomTypeIsOpen] = useState(false);
     
-    const [selectedRoomType, setSelectedRoomType] = useState<HotelRoomType | null>(null)
+    const [selectedRoomType, setSelectedRoomType] = useState<HotelRoomType | null>(null);
 
-    async function getHotels(){
+    async function getHotels() {
         try {
             const response = await axios.get("/api/hotels/view")
             if (response.data.success) setHotels(response.data.hotels)
@@ -79,7 +89,7 @@ const HotelDashboard = () => {
         }
     }
 
-    async function getRoomTypes(){
+    async function getRoomTypes() {
         try {
             const response = await axios.get("/api/hotels/viewRoomTypes")
             if (response.data.success) setHotelRoomTypes(response.data.roomTypes)
@@ -89,11 +99,33 @@ const HotelDashboard = () => {
         }
     }
 
+    async function getRooms() {
+        try {
+            const response = await axios.get("/api/hotels/viewRooms")
+            if (response.data.success) setHotelRooms(response.data.rooms)
+        } catch (error: any) {
+            console.log(error.message)
+        }
+    }
+
+    async function updateHotelInfo() {
+        // await getHotels()
+        await getRoomTypes()
+        await getRooms()
+
+        const filteredRooms = hotelRooms?.filter((room) => {if (room.room_type.hotel_id === selectedHotel?.id) return room})
+        setSelectedHotelRooms(filteredRooms)
+
+        const roomTypes = hotelRoomTypes?.filter((roomType) => {if (roomType.hotel_id === selectedHotel?.id) return roomType})
+        setSelectedHotelRoomTypes(roomTypes)
+    }
+
     useEffect(() => {
         if (!hotels) getHotels()
         if (selectedHotel && !hotelRoomTypes) getRoomTypes()
+        if (!hotelRooms) getRooms()
 
-    }, [hotels, hotelRoomTypes, selectedHotel])
+    }, [hotels, hotelRoomTypes, hotelRooms, selectedHotel])
 
     const form = useForm<z.infer<typeof hotelFormSchema>>({
         resolver: zodResolver(hotelFormSchema),
@@ -147,6 +179,10 @@ const HotelDashboard = () => {
     }
 
     const handleHotelSelect = (hotelName: string) => {
+        getHotels()
+        getRoomTypes()
+        getRooms()
+
         let selectedHotelId: number
 
         hotels?.filter((hotel, index) => {
@@ -156,7 +192,9 @@ const HotelDashboard = () => {
             }
         })
 
-        getRoomTypes()
+        const filteredRooms = hotelRooms?.filter((room) => {if (room.room_type.hotel_id === selectedHotelId) return room})
+        setSelectedHotelRooms(filteredRooms)
+
         const roomTypes = hotelRoomTypes?.filter((item) => {if (item.hotel_id === selectedHotelId) return item})
         setSelectedHotelRoomTypes(roomTypes)
         setSelectedRoomType(null)
@@ -222,7 +260,7 @@ const HotelDashboard = () => {
                         <DialogHeader className='mb-4'>
                             <DialogTitle>Add a Hotel</DialogTitle>
                             <DialogDescription>
-                                Add a hotel by filling the information below.
+                                Add a hotel by entering the information below.
                             </DialogDescription>
                         </DialogHeader>
 
@@ -244,7 +282,6 @@ const HotelDashboard = () => {
                     <div className='flex justify-between'>
                         <h2 className='font-bold text-xl'>{selectedHotel.name}</h2>
                         <Dialog open={addRoomTypesIsOpen} onOpenChange={setAddRoomTypesIsOpen}>
-                            <Button variant={"outline"} onClick={() => setAddRoomTypesIsOpen(true)}><Plus /> Add Room Type</Button>
                             
                             <DialogContent className='font-poppins max-h-screen overflow-y-auto'>
                                 <DialogHeader className='flex flex-col gap-1'>
@@ -335,60 +372,95 @@ const HotelDashboard = () => {
                     <br />
 
                     {/* Main hotel management section */}
-                    <div className='grid grid-cols-4 gap-8'>
-                        <DashboardCard title='Total Rooms' icon={<Bed color='orange' />} content={selectedHotel.room_count.toString()}  />
-                        <DashboardCard title='Available Rooms' icon={<DoorOpen color='green' />} content={selectedHotel.room_count.toString()}  />
-                    </div>
-                    <div className='my-8 flex flex-col gap-4'>
-                        <h2 className='font-semibold text-lg'>Room Type Management</h2>
-                        <Card className='w-1/2 pt-6'>
-                            
-                            <CardContent>
-                                {/* Room type selection */}
-                                <div className="flex flex-col gap-3">
-                                <Label htmlFor='roomType' className=''>Select a Room Type</Label>
-                                <Select name='roomType' onValueChange={(value) => handleRoomTypeSelect(parseInt(value))}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select Room Type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {selectedHotelRoomTypes?.map((roomType, index) => (
-                                            <SelectItem key={index} value={roomType.id.toString()} className='hover:cursor-pointer'>{roomType.name}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                    <div className='grid grid-cols-2 gap-8'>
+                        <div className='grid grid-cols-2 gap-8'>
+                            <DashboardCard title='Total Rooms' icon={<Bed color='orange' />} content={selectedHotel.room_count.toString()}  />
+                            <DashboardCard title='Occupied Rooms' icon={<DoorClosed color='red' />} content={"0"}  />
+                            <div className='my-8 flex flex-col col-span-full gap-4'>
+                                <div className='flex justify-between place-content-center my-auto'>
+                                    <h2 className='font-semibold text-lg'>Room Type Management</h2> 
+                                    <Button variant={"outline"} onClick={() => setAddRoomTypesIsOpen(true)}><Plus /> Add Room Type</Button>
                                 </div>
-                                {/* Manage the selected room type below */}
-                                <div>
-                                { selectedRoomType && 
-                                    <div className='mt-3 flex flex-col gap-2'>
-                                        <div>
-                                            <span className='font-medium'>Selected Room Type:</span> {selectedRoomType.name}
+                                
+                                <Card className='w-full pt-6'>
+                                    
+                                    <CardContent>
+                                        {/* Room type selection */}
+                                        <div className="flex flex-col gap-3">
+                                        <Label htmlFor='roomType' className=''>Select a Room Type</Label>
+                                        <Select name='roomType' onValueChange={(value) => handleRoomTypeSelect(parseInt(value))}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select Room Type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {selectedHotelRoomTypes?.map((roomType, index) => (
+                                                    <SelectItem key={index} value={roomType.id.toString()} className='hover:cursor-pointer'>{roomType.name}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         </div>
-                                        <br />
-                                        <AlertDialog>
-                                            <AlertDialogTrigger className='w-fit flex gap-2 p-2 px-4 rounded-md bg-red-500 text-white place-items-center'><Trash className='w-[20px]' /> Delete Room Type</AlertDialogTrigger>
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    This action cannot be undone. This will permanently delete the room type and all the rooms of the type.
-                                                </AlertDialogDescription>
-                                                </AlertDialogHeader>
+                                        {/* Manage the selected room type below */}
+                                        <div>
+                                        { selectedRoomType && 
+                                            <div className='mt-8 flex flex-col gap-2 mx-2'>
+                                                <div className='flex gap-2 place-items-center'><Tag className='w-[20px]' /><span className='font-medium'>Name:</span> {selectedRoomType.name}</div>
+                                                <div className='flex gap-2 place-items-center'><Bed className='w-[20px]' /><span className='font-medium'>Bed Count:</span> {selectedRoomType.bed_count}</div>
+                                                <div className='flex gap-2 place-items-center'><BadgeDollarSign className='w-[20px]' /><span className='font-medium'>Price:</span> MVR {selectedRoomType.price}</div>
 
-                                                <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction 
-                                                className='bg-red-500 hover:bg-red-600'
-                                                onClick={handleRoomTypeDelete}
-                                                >Delete</AlertDialogAction>
-                                                </AlertDialogFooter>
+                                               
+                                                {/* Delete Dialog */}
+                                                <div className='flex gap-4 mt-4'>
+                                                    <Button variant={"secondary"} onClick={() => setEditRoomTypeIsOpen(true)}><Pencil className='w-[20px]' /> Edit Room Type</Button>
+                                                    <EditRoomType isOpen={editRoomTypeIsOpen} setIsOpen={setEditRoomTypeIsOpen} roomTypeDetail={selectedRoomType} />
 
-                                            </AlertDialogContent>
-                                        </AlertDialog>
-                                    </div>
-                                }
-                                </div>
+                                                    <AlertDialog>
+                                                        <AlertDialogTrigger className='w-fit flex gap-2 p-2 px-4 rounded-md bg-red-500 text-white place-items-center'><Trash className='w-[20px]' /> Delete Room Type</AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                This action cannot be undone. This will permanently delete the room type and all the rooms of the type.
+                                                            </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                <AlertDialogAction 
+                                                                className='bg-red-500 hover:bg-red-600'
+                                                                onClick={handleRoomTypeDelete}
+                                                                >Delete</AlertDialogAction>
+                                                            </AlertDialogFooter>
+
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
+                                                </div>
+                                            </div>
+                                        }
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </div>
+
+                        <div className='flex flex-col gap-2 h-full'>
+                            <h2 className='font-semibold text-lg'>Hotel Revenue</h2>
+                            <Card>
+                                <CardContent className=''>
+
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                    <div>
+                        {/* Rooms management */}
+                        <div className='flex justify-between place-items-center mb-5'>
+                            <h2 className='font-semibold text-lg'>Manage Rooms</h2>
+                            <Button variant={"outline"} onClick={() => setAddRoomIsOpen(true)}><Plus /> Add Room</Button>
+                            <AddRoom isOpen={addRoomIsOpen} setIsOpen={setAddRoomIsOpen} roomTypes={selectedHotelRoomTypes} />
+                        </div>
+                        <Card>
+                            <CardContent className='p-4'>
+                                <RoomsTable rooms={selectedHotelRooms} roomTypes={selectedHotelRoomTypes} updateHotel={updateHotelInfo} />
                             </CardContent>
                         </Card>
                     </div>
