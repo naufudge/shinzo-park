@@ -74,3 +74,11 @@ export const roomAddingFormSchema = z.object({
     occupied: z.boolean().default(false),
     room_type_id: z.string()
 })
+
+export type UserPublic = {
+    id: number,
+    username: string,
+    email: string,
+    role: string,
+    loyalty_points: number,
+}

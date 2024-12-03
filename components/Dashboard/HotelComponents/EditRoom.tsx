@@ -88,7 +88,7 @@ const EditRoom: React.FC<EditRoom> = ({ isOpen, setIsOpen, roomTypes, roomDetail
                                 <FormItem>
                                 <FormLabel>Room Number</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Room Number" {...field} />
+                                    <Input type='number' placeholder="Room Number" {...field} />
                                 </FormControl>
                                 
                                 <FormMessage />

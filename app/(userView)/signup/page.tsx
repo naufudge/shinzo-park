@@ -62,7 +62,7 @@ export default function RegisterForm() {
 
     console.log(userData)
     if (userData.username.length > 3 && userData.email.includes("@")) {
-      // const resopnse = await axios.post("https://dhonveli-api.up.railway.app/users/", userData)
+      const response = await axios.post("https://dhonveli-api.up.railway.app/users/", userData)
       const result = await bcrypt.compare(password, userData.password)
       console.log(result)
       // Do something based on the response
