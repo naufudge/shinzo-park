@@ -4,6 +4,7 @@ import { Poppins, Roboto, Dancing_Script } from "next/font/google"
 import "@/app/globals.css";
 import NavBar from "@/components/NavBar";
 import * as motion from "framer-motion/client"
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Shinzo Park",
@@ -41,7 +42,13 @@ export default function RootLayout({
         >
           <NavBar />
         </motion.div>
-        {children}
+        <div className="h-full">
+          {children}
+        </div>
+
+        <div className="mt-[100px]">
+          <Footer />
+        </div>
       </body>
     </html>
   );
