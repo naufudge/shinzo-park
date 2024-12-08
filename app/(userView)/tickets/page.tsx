@@ -5,7 +5,7 @@ const TicketsPage = () => {
   return (
     <div className="h-full bg-gray-100 flex flex-col overflow-x-clip">
       {/* Hero Section */}
-      <div className="relative 2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl">
+      <div className="2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl">
         <div className="font-poppins absolute mx-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-center">
           <h1 className="drop-shadow-md text-[5rem] font-semibold font-dancing text-stone-50">
             Tickets
@@ -26,12 +26,12 @@ const TicketsPage = () => {
       {/* Activities Section */}
       <div className="mx-10">
         <h1 className="font-poppins font-bold text-2xl text-center mb-8">Activities</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mx-[70px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             { name: 'Arcade', img: '/arcade.jpg' },
             { name: 'Cinema', img: '/cinema.jpg' },
             { name: 'Water Park', img: '/water-park.jpg' },
-            { name: 'Joy Rides', img: '/ride-cropped.jpg' },
+            { name: 'Joy Rides', img: '/joy-rides.jpg' },
           ].map((activity, index) => (
             <div
               key={index}
