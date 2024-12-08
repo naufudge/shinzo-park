@@ -82,3 +82,15 @@ export type UserPublic = {
     role: string,
     loyalty_points: number,
 }
+
+export type HotelBooking = {
+    id: number,
+    check_in_date: string,
+    check_out_date: string,
+    booking_date: string,
+    total_price: number,
+    numOfGuests: number,
+    user_id: number,
+    user: UserType,
+    rooms: any[]
+}

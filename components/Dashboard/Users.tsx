@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit, User, Users } from 'lucide-react';
+import { Edit, Users } from 'lucide-react';
 import EditUser from './UsersComponent/EditUser';
 
 function capitalizeFirstLetter(val: string) {
@@ -49,10 +49,10 @@ const UsersSection = () => {
       <Table>
         <TableHeader>
           <TableRow className='font-bold'>
-            <TableHead>Username</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead className='w-1/4'>Username</TableHead>
+            <TableHead className='w-1/4'>Email</TableHead>
+            <TableHead className='w-1/4'>Role</TableHead>
+            <TableHead className='w-1/4'>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

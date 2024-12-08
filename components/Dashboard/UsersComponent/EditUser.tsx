@@ -56,7 +56,7 @@ const EditUser: React.FC<EditUser> = ({ isOpen, setIsOpen, userDetails }) => {
                 </DialogHeader>
                 {userDetails &&
                     <>
-                        <Label htmlFor='userRole font-semibold'>Select a role below</Label>
+                        <Label htmlFor='userRole'>Select a role below</Label>
                         <Select onValueChange={(e) => setSelectedRole(e)} defaultValue={userDetails.role}>
                             <SelectTrigger id='userRole' className="w-full">
                                 <SelectValue placeholder="User Role" />

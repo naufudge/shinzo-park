@@ -106,8 +106,8 @@ const RoomsTable: React.FC<RoomsTable> = ({ rooms, roomTypes, updateHotel }) => 
                 ))}
                 </>
             :
-                <div>Loading...</div>
-            }
+            <TableRow><div className='mt-10 text-center italic opacity-50 w-full'>Loading...</div></TableRow>
+        }
         </TableBody>
         </Table>
 

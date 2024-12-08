@@ -443,10 +443,10 @@ const HotelDashboard = () => {
                         </div>
 
                         <div className='flex flex-col gap-2 h-full'>
-                            <h2 className='font-semibold text-lg'>Hotel Revenue</h2>
+                            <h2 className='font-semibold text-lg'>Recent Bookings</h2>
                             <Card>
                                 <CardContent className=''>
-
+                                    
                                 </CardContent>
                             </Card>
                         </div>

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Edit, Hotel, Settings, Ticket, User } from 'lucide-react'
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { TokenGetResponseType } from '@/types/MyTypes';
+import { HotelBooking, TokenGetResponseType } from '@/types/MyTypes';
 import axios from 'axios';
 import { JwtPayload } from 'jsonwebtoken';
 
@@ -13,7 +13,8 @@ const ProfilePage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
     const [tokenData, setTokenData] = useState<JwtPayload | null>()
     const [currentSection, setCurrentSection] = useState("personal")
-
+    const [bookings, setBookings] = useState<HotelBooking[]>()
+    
     useEffect(() => {
         const getToken = async () => {
             try {
@@ -28,8 +29,27 @@ const ProfilePage = () => {
                 console.log(error.message);
             }
         }
+
+        const getBookings = async () => {
+            try {
+                const response = await axios.get("/api/bookings/view")
+                if (response.data.success) {
+                    const bookingsData: HotelBooking[] = response.data.bookings
+                    const filteredBookings = bookingsData.filter((booking) => {
+                        if (booking.user_id === tokenData?.id) return booking
+                    })
+                    setBookings(filteredBookings)
+                    console.log(filteredBookings)
+                }
+            } catch (error: any) {
+                console.log(error.message)                
+            }
+        }
+
         if (!loggedIn) getToken();
-    }, [currentSection])
+        if (!bookings && tokenData) getBookings();
+
+    }, [currentSection, bookings, tokenData, loggedIn])
 
     return (
         <div className='grid grid-cols-10 my-[70px] gap-10 mx-[180px] font-poppins'>
@@ -73,7 +93,7 @@ const ProfilePage = () => {
                 {currentSection === "personal" ? 
                 <PersonalSection tokenData={tokenData!} /> :
                 currentSection === "bookings" ?
-                <BookingsSection />
+                <BookingsSection bookings={bookings} />
                 : <></>
                 }
             </div>    
@@ -142,11 +162,20 @@ const PersonalSection: React.FC<SectionProps> = ({tokenData}) => {
     )
 }
 
-const BookingsSection = () => {
+interface BookingSectionProps {
+    bookings: HotelBooking[] | undefined;
+}
+
+const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
     return(
-        <div>
-            <h1 className='font-bold text-[1.75rem]'>Hotels Bookings</h1>
+        <div className='font-poppins'>
+            <h1 className='font-bold text-[1.75rem]'>Hotel Room Bookings</h1>
             <Separator className='my-5' />
+            {bookings?.map((booking, index) => (
+                <div key={index} className='outline rounded-lg py-4 px-5 w-fit outline-stone-100'>
+                    {booking.id}
+                </div>
+            ))}
         </div>
     )
 }
