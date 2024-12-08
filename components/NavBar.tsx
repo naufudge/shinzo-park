@@ -69,7 +69,7 @@ const NavBar = () => {
                                     onClick={() => setUserDropdown(!userDropdown)}
                                     />
                                 </div>
-                                <div className={`absolute z-[105] translate-y-[6rem] bg-white shadow-xl text-sm rounded-lg ${userDropdown ? "opacity-100" : "opacity-0"} transition-all duration-200`}>
+                                <div className={`absolute z-[105] translate-y-[6rem] bg-white shadow-xl text-sm rounded-lg ${userDropdown ? "opacity-100" : "opacity-0 hidden"} transition-all duration-200`}>
                                     <div
                                     className='w-full p-3 hover:bg-stone-200 hover:cursor-pointer rounded-lg'
                                     onClick={() => setUserDropdown(!userDropdown)}
