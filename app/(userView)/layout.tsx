@@ -7,8 +7,8 @@ import * as motion from "framer-motion/client"
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Shinzo Park",
-  description: "The best theme park in Maldives!",
+  title: "Dhonveli",
+  description: "The best theme park resort in Maldives!",
 };
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins" })
@@ -26,7 +26,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
       </head>
       <body
-        className={`${poppins.variable} ${roboto.variable} ${dancing.variable} antialiased bg-slate-100 h-full`}
+        className={`${poppins.variable} ${roboto.variable} ${dancing.variable} antialiased bg-gray-50 h-full`}
       > 
         <motion.div 
           className="sticky top-4 z-[100]"

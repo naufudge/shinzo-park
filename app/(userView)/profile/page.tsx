@@ -16,6 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import Activities from '@/components/Activities';
 
 type ModifiedHotelBooking = HotelBooking & {
     hotel: string;
@@ -28,15 +29,17 @@ const ProfilePage = () => {
 
     const [bookings, setBookings] = useState<HotelBooking[]>([])
     const [finalBookings, setFinalBookings] = useState<ModifiedHotelBooking[]>([])
+
+    const [activities, setActivities] = useState()
     
-    // Get hotel name from room type ID
+    // Get hotel name from Room type ID
     const getHotelForRooms = async () => {
         try {
             let userBookings: ModifiedHotelBooking[] = [];
-            const response = await axios.get("https://dhonveli-api.up.railway.app/room_types/")
+            const response = await axios.get("/api/hotels/viewRoomTypes")
             bookings.filter(async (booking) => {
                 const room_type_id = booking.rooms[0].room_type_id
-                const roomTypes: HotelRoomType[] = response.data
+                const roomTypes: HotelRoomType[] = response.data.roomTypes
                 roomTypes.filter((roomType) => {
                     if (roomType.id === room_type_id) {
                         userBookings.push({...booking, hotel: roomType.hotel.name})
@@ -66,7 +69,6 @@ const ProfilePage = () => {
         const getBookings = async () => {
             try {
                 const response = await axios.get("/api/bookings/view")
-                let userBookings: ModifiedHotelBooking[] = []
                 if (response.data.success) {
                     const bookingsData: HotelBooking[] = response.data.bookings
                     const filteredBookings = bookingsData.filter(async (booking) => {
@@ -127,9 +129,11 @@ const ProfilePage = () => {
             {/* Right Side */}
             <div className='bg-white col-span-7 shadow-md rounded-xl p-8'>
                 {currentSection === "personal" ? 
-                <PersonalSection tokenData={tokenData!} /> :
+                    <PersonalSection tokenData={tokenData!} /> :
                 currentSection === "bookings" ?
-                <BookingsSection bookings={finalBookings} />
+                    <BookingsSection bookings={finalBookings} />
+                : currentSection === "tickets" ?
+                    <TicketsSection />
                 : <></>
                 }
             </div>    
@@ -137,11 +141,12 @@ const ProfilePage = () => {
     )
 }
 
-interface SectionProps {
+// Personal Info Section Component
+interface PersonalSectionProps {
     tokenData: JwtPayload | null
 }
 
-const PersonalSection: React.FC<SectionProps> = ({tokenData}) => {
+const PersonalSection: React.FC<PersonalSectionProps> = ({tokenData}) => {
     return(
         <div className='font-poppins'>
             <h1 className='font-bold text-[1.75rem]'>User Information</h1>
@@ -195,6 +200,7 @@ const PersonalSection: React.FC<SectionProps> = ({tokenData}) => {
     )
 }
 
+// Bookings section component
 interface BookingSectionProps {
     bookings: ModifiedHotelBooking[] | undefined;
 }
@@ -254,5 +260,21 @@ const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
         </div>
     )
 }
+
+// Activity tickets section component
+
+interface TicketsSectionProps {
+
+}
+
+const TicketsSection: React.FC<TicketsSectionProps> = ({  }) => {
+    return(
+        <div className='font-poppins'>
+            <h1 className='font-bold text-[1.75rem]'>Activity Tickets</h1>
+            
+        </div>
+    )
+}
+
 
 export default ProfilePage

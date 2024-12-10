@@ -99,3 +99,9 @@ export type HotelBooking = {
         room_type_id: number,
     }[]
 }
+
+export type Activity = {
+    id: number;
+    name: string;
+    price: number;
+}
