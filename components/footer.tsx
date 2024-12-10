@@ -83,7 +83,7 @@ const Footer = () => {
           <p className="text-gray-400 mb-4 md:mb-0">&copy; 2024 FunZone. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#privacy" className="hover:text-white">
-              Privacy Policy
+              Privacy Policyd
             </a>
             <a href="#terms" className="hover:text-white">
               Terms of Service
