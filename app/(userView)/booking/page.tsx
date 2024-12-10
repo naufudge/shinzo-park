@@ -31,7 +31,7 @@ export default function ResortBooking() {
 
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col overflow-x-clip">
+    <div className="bg-gray-100 flex flex-col overflow-x-clip">
       <div className='relative 2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl'>
         <div className="font-poppins absolute mx-auto 2xl:top-[40%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-center">
           <h1 className="drop-shadow-md text-[5rem] font-semibold font-dancing text-stone-50">

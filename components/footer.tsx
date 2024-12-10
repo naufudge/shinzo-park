@@ -1,5 +1,7 @@
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import React from "react";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+// import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+
 
 const Footer = () => {
   return (
@@ -46,7 +48,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-white"
               >
-                <FaFacebookF />
+                <Facebook />
               </a>
               <a
                 href="#twitter"
@@ -54,7 +56,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-white"
               >
-                <FaTwitter />
+                <Twitter />
               </a>
               <a
                 href="#instagram"
@@ -62,7 +64,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-white"
               >
-                <FaInstagram />
+                <Instagram />
               </a>
               <a
                 href="#linkedin"
@@ -70,7 +72,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-white"
               >
-                <FaLinkedinIn />
+                <Linkedin />
               </a>
             </div>
           </div>

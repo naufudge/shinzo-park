@@ -5,16 +5,50 @@ import Image from 'next/image'
 import { Edit, Hotel, Settings, Ticket, User } from 'lucide-react'
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { HotelBooking, TokenGetResponseType } from '@/types/MyTypes';
+import { HotelBooking, HotelRoomType, TokenGetResponseType } from '@/types/MyTypes';
 import axios from 'axios';
 import { JwtPayload } from 'jsonwebtoken';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+
+type ModifiedHotelBooking = HotelBooking & {
+    hotel: string;
+}
 
 const ProfilePage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
     const [tokenData, setTokenData] = useState<JwtPayload | null>()
     const [currentSection, setCurrentSection] = useState("personal")
-    const [bookings, setBookings] = useState<HotelBooking[]>()
+
+    const [bookings, setBookings] = useState<HotelBooking[]>([])
+    const [finalBookings, setFinalBookings] = useState<ModifiedHotelBooking[]>([])
     
+    // Get hotel name from room type ID
+    const getHotelForRooms = async () => {
+        try {
+            let userBookings: ModifiedHotelBooking[] = [];
+            const response = await axios.get("https://dhonveli-api.up.railway.app/room_types/")
+            bookings.filter(async (booking) => {
+                const room_type_id = booking.rooms[0].room_type_id
+                const roomTypes: HotelRoomType[] = response.data
+                roomTypes.filter((roomType) => {
+                    if (roomType.id === room_type_id) {
+                        userBookings.push({...booking, hotel: roomType.hotel.name})
+                    }
+                })
+            })
+            setFinalBookings(userBookings)
+        } catch (error: any) {
+            console.log(error.message)
+        }
+    }
+
     useEffect(() => {
         const getToken = async () => {
             try {
@@ -24,7 +58,6 @@ const ProfilePage = () => {
                     setTokenData(responseData.token);
                     setLoggedIn(true);
                 }
-                console.log(responseData.token)
             } catch (error: any) {
                 console.log(error.message);
             }
@@ -33,13 +66,15 @@ const ProfilePage = () => {
         const getBookings = async () => {
             try {
                 const response = await axios.get("/api/bookings/view")
+                let userBookings: ModifiedHotelBooking[] = []
                 if (response.data.success) {
                     const bookingsData: HotelBooking[] = response.data.bookings
-                    const filteredBookings = bookingsData.filter((booking) => {
-                        if (booking.user_id === tokenData?.id) return booking
+                    const filteredBookings = bookingsData.filter(async (booking) => {
+                        if (booking.user_id === tokenData?.id) {
+                            return booking
+                        }
                     })
                     setBookings(filteredBookings)
-                    console.log(filteredBookings)
                 }
             } catch (error: any) {
                 console.log(error.message)                
@@ -47,9 +82,10 @@ const ProfilePage = () => {
         }
 
         if (!loggedIn) getToken();
-        if (!bookings && tokenData) getBookings();
+        if (bookings.length === 0 && tokenData) getBookings();
+        if (bookings.length != 0 && finalBookings.length === 0) getHotelForRooms();
 
-    }, [currentSection, bookings, tokenData, loggedIn])
+    }, [currentSection, bookings, tokenData, loggedIn, finalBookings])
 
     return (
         <div className='grid grid-cols-10 my-[70px] gap-10 mx-[180px] font-poppins'>
@@ -93,7 +129,7 @@ const ProfilePage = () => {
                 {currentSection === "personal" ? 
                 <PersonalSection tokenData={tokenData!} /> :
                 currentSection === "bookings" ?
-                <BookingsSection bookings={bookings} />
+                <BookingsSection bookings={finalBookings} />
                 : <></>
                 }
             </div>    
@@ -108,9 +144,6 @@ interface SectionProps {
 const PersonalSection: React.FC<SectionProps> = ({tokenData}) => {
     return(
         <div className='font-poppins'>
-            {
-                
-            }
             <h1 className='font-bold text-[1.75rem]'>User Information</h1>
             <Separator className='my-5' />
             <div className='flex gap-10 text-stone-500'>
@@ -163,19 +196,61 @@ const PersonalSection: React.FC<SectionProps> = ({tokenData}) => {
 }
 
 interface BookingSectionProps {
-    bookings: HotelBooking[] | undefined;
+    bookings: ModifiedHotelBooking[] | undefined;
 }
 
 const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
+
+    const formatDateString = (dateString: string) => {
+        // Convert the string to a Date object
+        const date = new Date(dateString);
+
+        // Check if the date is valid
+        if (isNaN(date.getTime())) {
+            throw new Error("Invalid date string");
+        }
+
+        // Format the date in the desired format: "09 December 2024"
+        const options: Intl.DateTimeFormatOptions = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+        };
+
+        return date.toLocaleDateString('en-GB', options);
+    }
+
+
     return(
         <div className='font-poppins'>
             <h1 className='font-bold text-[1.75rem]'>Hotel Room Bookings</h1>
             <Separator className='my-5' />
-            {bookings?.map((booking, index) => (
-                <div key={index} className='outline rounded-lg py-4 px-5 w-fit outline-stone-100'>
-                    {booking.id}
-                </div>
-            ))}
+            { bookings && bookings?.length != 0 ? 
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className='font-semibold'>No.</TableHead>
+                            <TableHead className='font-semibold'>Check-in Date</TableHead>
+                            <TableHead className='font-semibold'>Check-out Date</TableHead>
+                            <TableHead className='font-semibold'>Hotel</TableHead>
+                            {/* <TableHead className='font-semibold'>Actions</TableHead> */}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {bookings.map((booking, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{booking.id}</TableCell>
+                                <TableCell className=''>{formatDateString(booking.check_in_date)}</TableCell>
+                                <TableCell className=''>{formatDateString(booking.check_out_date)}</TableCell>
+                                <TableCell className=''>{booking.hotel}</TableCell>
+                                {/* <TableCell></TableCell> */}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            :
+                <div>Loading...</div>
+            }
         </div>
     )
 }

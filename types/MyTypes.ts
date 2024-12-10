@@ -92,5 +92,10 @@ export type HotelBooking = {
     numOfGuests: number,
     user_id: number,
     user: UserType,
-    rooms: any[]
+    rooms: {
+        id: number,
+        room_number: string,
+        occupied: boolean,
+        room_type_id: number,
+    }[]
 }
