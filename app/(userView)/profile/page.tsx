@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Edit, Hotel, Settings, Ticket, User } from 'lucide-react'
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { HotelBooking, HotelRoomType, TokenGetResponseType } from '@/types/MyTypes';
+import { ActivityTicket, HotelBooking, HotelRoomType, TokenGetResponseType } from '@/types/MyTypes';
 import axios from 'axios';
 import { JwtPayload } from 'jsonwebtoken';
 import {
@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import Activities from '@/components/Activities';
+import Loading from '@/components/Loading';
 
 type ModifiedHotelBooking = HotelBooking & {
     hotel: string;
@@ -28,9 +28,9 @@ const ProfilePage = () => {
     const [currentSection, setCurrentSection] = useState("personal")
 
     const [bookings, setBookings] = useState<HotelBooking[]>([])
-    const [finalBookings, setFinalBookings] = useState<ModifiedHotelBooking[]>([])
+    const [finalBookings, setFinalBookings] = useState<ModifiedHotelBooking[] | null>(null)
 
-    const [activities, setActivities] = useState()
+    const [activityTickets, setActivityTickets] = useState<ActivityTicket[] | null>(null)
     
     // Get hotel name from Room type ID
     const getHotelForRooms = async () => {
@@ -77,24 +77,37 @@ const ProfilePage = () => {
                         }
                     })
                     setBookings(filteredBookings)
-                }
+                } else setBookings([])
             } catch (error: any) {
                 console.log(error.message)                
             }
         }
 
+        const getUserActivityTickets = async () => {
+            try {
+                const response = await axios.get("/api/activities/viewTickets")
+                if (response.data.success) {
+                    setActivityTickets(response.data.tickets);
+                } else {
+                    setActivityTickets([])
+                }
+            } catch (error: any) {
+                console.log(error.message)
+            }
+        }
+
         if (!loggedIn) getToken();
         if (bookings.length === 0 && tokenData) getBookings();
-        if (bookings.length != 0 && finalBookings.length === 0) getHotelForRooms();
-
-    }, [currentSection, bookings, tokenData, loggedIn, finalBookings])
+        if (bookings.length != 0 && !finalBookings) getHotelForRooms();
+        if (loggedIn && !activityTickets) getUserActivityTickets();
+    }, [currentSection, bookings, tokenData, loggedIn, finalBookings, activityTickets])
 
     return (
         <div className='grid grid-cols-10 my-[70px] gap-10 mx-[180px] font-poppins'>
             {/* Left Side */}
             <div className='bg-white col-span-3 shadow-md rounded-xl'>
                 <div className='mx-auto w-[150px] my-10 opacity-50 hover:bg-stone-300 hover:cursor-pointer rounded-full transition-all'>
-                    <Image alt='pp' src={"/pp.png"} width={512} height={0} />
+                    <Image alt='pp' src={"/pp.png"} width={512} height={0} priority />
                 </div>
                 {/* Options */}
                 <div className='flex justify-center place-items-center mb-10'>
@@ -133,12 +146,35 @@ const ProfilePage = () => {
                 currentSection === "bookings" ?
                     <BookingsSection bookings={finalBookings} />
                 : currentSection === "tickets" ?
-                    <TicketsSection />
+                    <TicketsSection tickets={activityTickets} />
                 : <></>
                 }
             </div>    
         </div>
     )
+}
+
+// Convert the string to a Date object
+const formatDateString = (dateString: string | null | undefined) => {
+    if (dateString) {
+        const date = new Date(dateString);
+
+        // Check if the date is valid
+        if (isNaN(date.getTime())) {
+            throw new Error("Invalid date string");
+        }
+
+        // Format the date in the desired format: "09 December 2024"
+        const options: Intl.DateTimeFormatOptions = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+        };
+
+        return date.toLocaleDateString('en-GB', options);
+    } else {
+        return "";
+    }
 }
 
 // Personal Info Section Component
@@ -202,36 +238,15 @@ const PersonalSection: React.FC<PersonalSectionProps> = ({tokenData}) => {
 
 // Bookings section component
 interface BookingSectionProps {
-    bookings: ModifiedHotelBooking[] | undefined;
+    bookings: ModifiedHotelBooking[] | null | undefined ;
 }
 
 const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
-
-    const formatDateString = (dateString: string) => {
-        // Convert the string to a Date object
-        const date = new Date(dateString);
-
-        // Check if the date is valid
-        if (isNaN(date.getTime())) {
-            throw new Error("Invalid date string");
-        }
-
-        // Format the date in the desired format: "09 December 2024"
-        const options: Intl.DateTimeFormatOptions = {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-        };
-
-        return date.toLocaleDateString('en-GB', options);
-    }
-
-
     return(
         <div className='font-poppins'>
             <h1 className='font-bold text-[1.75rem]'>Hotel Room Bookings</h1>
             <Separator className='my-5' />
-            { bookings && bookings?.length != 0 ? 
+            { bookings && bookings?.length > 0 ? 
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -254,8 +269,10 @@ const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
                         ))}
                     </TableBody>
                 </Table>
+            : bookings?.length === 0 ?
+                <div>No Bookings</div> 
             :
-                <div>Loading...</div>
+                <Loading />
             }
         </div>
     )
@@ -264,14 +281,55 @@ const BookingsSection: React.FC<BookingSectionProps> = ({ bookings }) => {
 // Activity tickets section component
 
 interface TicketsSectionProps {
-
+    tickets: ActivityTicket[] | null | undefined;
 }
 
-const TicketsSection: React.FC<TicketsSectionProps> = ({  }) => {
+const TicketsSection: React.FC<TicketsSectionProps> = ({ tickets }) => {
+    const getActivityName = (id: number) => {
+        switch (id) {
+            case 2:
+                return "Cinema"
+            case 3:
+                return "Water Park"
+            case 4:
+                return "Amusement Park"
+            case 5:
+                return "Arcade"
+            default:
+                return "" 
+        }
+    }
+    
     return(
         <div className='font-poppins'>
             <h1 className='font-bold text-[1.75rem]'>Activity Tickets</h1>
-            
+            <Separator className='my-5' />
+
+            {tickets && tickets?.length > 0 && 
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className='font-semibold'>No.</TableHead>
+                            <TableHead className='font-semibold'>Activity</TableHead>
+                            <TableHead className='font-semibold'>Date</TableHead>
+                            <TableHead className='font-semibold'>Price (MVR)</TableHead>
+                            {/* <TableHead className='font-semibold'>Actions</TableHead> */}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {tickets.map((ticket, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{ticket.id}</TableCell>
+                                <TableCell className=''>{getActivityName(ticket.activity_id)}</TableCell>
+                                <TableCell className=''>{formatDateString(ticket.bookingDate)}</TableCell>
+                                <TableCell className=''>{ticket.total_price}</TableCell>
+                                {/* <TableCell></TableCell> */}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            }
+
         </div>
     )
 }

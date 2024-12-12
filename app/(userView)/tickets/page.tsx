@@ -2,23 +2,18 @@
 
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Activity } from '@/types/MyTypes';
+import { Activity, ActivityTicket, BookActivityTicket, TokenGetResponseType } from '@/types/MyTypes';
 import axios from 'axios';
 import { Separator } from '@/components/ui/separator';
 import Loading from '@/components/Loading';
+import { JwtPayload } from 'jsonwebtoken';
 
-
-type Ticket = {
-  qty: number; price: number;
-}
-type ActivityTickets = {
-  2: Ticket;
-  3: Ticket;
-  4: Ticket;
-  5: Ticket;
-}
 
 const TicketsPage = () => {
+  const [activities, setActivities] = useState<Activity[]>()
+  const [tokenData, setTokenData] = useState<JwtPayload | null>()
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null)
+
   const [arcadeCount, setArcadeCount] = useState(0)
   const [cinemaCount, setCinemaCount] = useState(0)
   const [waterParkCount, setWaterParkCount] = useState(0)
@@ -29,16 +24,9 @@ const TicketsPage = () => {
   const [waterParkSubTotal, setWaterParkSubTotal] = useState(0)
   const [amusementParkSubTotal, setAmusementParkSubTotal] = useState(0)
 
-  const [activities, setActivities] = useState<Activity[]>()
-
-  const [userTickets, setUserTickets] = useState<ActivityTickets>({
-    2: { qty: 0, price: 0 },
-    3: { qty: 0, price: 0 },
-    4: { qty: 0, price: 0 },
-    5: { qty: 0, price: 0 },
-  })
-
   const [totalPrice, setTotalPrice] = useState(0)
+
+
 
   useEffect(() => {
     async function getActivities() {
@@ -53,15 +41,27 @@ const TicketsPage = () => {
       }
     }
 
-    if (!activities) getActivities()
-  }, [activities])
+    async function getToken() {
+      try {
+        const response = await axios.get("/api/users/me")
+        const responseData: TokenGetResponseType = response.data
+        if (responseData.token) {
+          setTokenData(responseData.token);
+          setLoggedIn(true);
+          console.log("User logged in!")
+        } else {
+          setLoggedIn(false)
+          console.log("Not logged in")
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
 
+    if (!activities) getActivities();
+    if (loggedIn === null) getToken();
+  }, [activities, tokenData, loggedIn])
 
-  const updateTotalPrice = () => {
-    let total = arcadeSubTotal + cinemaSubTotal + waterParkSubTotal + amusementParkSubTotal
-    setTotalPrice(total)
-    return total
-  }
 
   const getActivityPrice = (id: number, qty: number) => {
     let price = 0;
@@ -72,7 +72,6 @@ const TicketsPage = () => {
       }
     })
     const subTotal = price * qty
-    // if (!Minus) { setTotalPrice(totalPrice + (subTotal)) } else { setTotalPrice(totalPrice - (subTotal)) }
 
     switch (id) {
       case 2:
@@ -98,7 +97,7 @@ const TicketsPage = () => {
     return subTotal;
   }
 
-  const handleAddMinus = (
+  const handleTicketQuantity = (
     id: number,
     count: number,
     setCount: Dispatch<SetStateAction<number>>,
@@ -106,7 +105,6 @@ const TicketsPage = () => {
   ) => {
     let num = count;
     if (count === 0 && minus === true) {
-      // updateTotalPrice()
       return 0;
     } else if (minus === false) {
       num++;
@@ -118,6 +116,46 @@ const TicketsPage = () => {
 
     // Handle the tickets
     getActivityPrice(id, num)
+  }
+
+  const handleTicketBooking = async () => {
+    try {
+      let data: BookActivityTicket[] = []
+      if (tokenData) {
+        if (arcadeCount > 0) {
+          data.push({
+            total_price: arcadeSubTotal,
+            activity_id: 5,
+            user_id: tokenData.id,
+          })
+        }
+        if (cinemaCount > 0) {
+          data.push({
+            total_price: cinemaSubTotal,
+            activity_id: 2,
+            user_id: tokenData.id,
+          })
+        }
+        if (waterParkCount > 0) {
+          data.push({
+            total_price: waterParkSubTotal,
+            activity_id: 3,
+            user_id: tokenData.id,
+          })
+        }
+        if (amusementParkSubTotal > 0) {
+          data.push({
+            total_price: amusementParkSubTotal,
+            activity_id: 4,
+            user_id: tokenData.id,
+          })
+        }
+        const response = await axios.post("/api/activities/book", data)
+        if (response.data.success) console.log("Successfully booked the activity tickets!")
+      }
+    } catch (error: any) {
+      console.log(error.message)
+    }
   }
 
   return (
@@ -142,7 +180,7 @@ const TicketsPage = () => {
         />
       </div>
 
-      {activities ?
+      { activities && loggedIn != null ?
         <>
           {/* Activities Section */}
           <div className="mx-[100px]">
@@ -176,7 +214,7 @@ const TicketsPage = () => {
                     <div
                       className="select-none border-r text-gray-500 font-bold w-full h-full py-2 px-4 hover:bg-gray-100 hover:cursor-pointer hover:rounded-l-md"
                       onClick={() => {
-                        handleAddMinus(activity.id, activity.count, activity.update, true)
+                        handleTicketQuantity(activity.id, activity.count, activity.update, true)
                       }}
                     >
                       -
@@ -189,7 +227,7 @@ const TicketsPage = () => {
                     <div
                       className="select-none border-l text-gray-500 font-bold w-full h-full py-2 px-4 hover:bg-gray-100 hover:cursor-pointer hover:rounded-r-md"
                       onClick={() => {
-                        handleAddMinus(activity.id, activity.count, activity.update, false)
+                        handleTicketQuantity(activity.id, activity.count, activity.update, false)
                       }}
                     >
                       +
@@ -210,7 +248,7 @@ const TicketsPage = () => {
 
             <div className="lg:col-span-2">
               <form className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="font-bold mb-6 text-stone-500">PAYMENT DETAILS</h2>
+                <h2 className="font-bold mb-6 text-stone-500">PAYMENT DETAILS</h2>
 
                 <div className="mb-4">
                   <label
@@ -272,10 +310,10 @@ const TicketsPage = () => {
 
             {/* Order Summary */}
             <div>
-              <div className="bg-white p-8 rounded-lg shadow-md flex flex-col gap-2 h-full justify-evenly">
-                <h2 className="font-bold mb-4 text-stone-500">YOUR ORDER</h2>
+              <div className="bg-white p-8 rounded-lg shadow-md flex flex-col gap-1 h-full justify-evenly">
+                <h2 className="font-bold mb-6 text-stone-500">YOUR ORDER</h2>
 
-                { !amusementParkCount && !arcadeCount && !cinemaCount && !waterParkCount && 
+                {!amusementParkCount && !arcadeCount && !cinemaCount && !waterParkCount &&
                   <div className='italic text-gray-500 text-center'>Please choose an acitivity.</div>
                 }
 
@@ -298,12 +336,17 @@ const TicketsPage = () => {
                     }
                   </div>
                 ))}
-                {/* <hr className="my-4" /> */}
+
                 <div className="flex flex-col gap-2 text-lg">
                   <span className='opacity-50 text-sm'>Total Price</span>
                   <span className='text-3xl font-semibold'>MVR {totalPrice}</span>
                 </div>
-                <button className="w-full bg-black text-white font-semibold py-2 mt-6 rounded-lg hover:bg-gray-800">
+
+                <button
+                  disabled={ (!amusementParkCount && !arcadeCount && !cinemaCount && !waterParkCount) || (loggedIn === null) }
+                  className="w-full bg-black text-white font-semibold py-2 mt-6 rounded-lg hover:bg-gray-800"
+                  onClick={handleTicketBooking}
+                >
                   Pay Now!
                 </button>
               </div>

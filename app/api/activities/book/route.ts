@@ -1,14 +1,14 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
-import { Activity } from "@/types/MyTypes";
+import { ActivityTicket, BookActivityTicket } from "@/types/MyTypes";
 
 
 export async function POST(request: NextRequest) {
     try {
-        const reqBody: Activity = await request.json()
+        const reqBody: BookActivityTicket[] = await request.json()
         console.log(reqBody)
 
-        const response = await axios.post("https://dhonveli-api.up.railway.app/bookings/", reqBody)
+        const response = await axios.post("https://dhonveli-api.up.railway.app/activity_ticket/", reqBody)
 
         return NextResponse.json({
             success: true,

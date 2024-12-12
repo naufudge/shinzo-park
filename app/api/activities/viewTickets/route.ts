@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const response = await axios.get("https://dhonveli-api.up.railway.app/activity_tickets/")
+        const response = await axios.get("https://dhonveli-api.up.railway.app/activity_ticket/")
 
         return NextResponse.json({
             success: true,
