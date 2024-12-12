@@ -8,7 +8,6 @@ import { useState } from 'react';
 
 export default function SignInSignUp() {
   const router = useRouter()
-  const [username, setUsername] = useState('');
   const [user, setUser] = useState({
     username: "",
     password: ""

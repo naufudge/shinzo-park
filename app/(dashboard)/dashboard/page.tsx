@@ -20,6 +20,7 @@ import WaterPark from '@/components/Dashboard/WaterPark';
 import Arcade from '@/components/Dashboard/Arcade';
 import Cinema from '@/components/Dashboard/Cinema';
 import UsersSection from '@/components/Dashboard/Users';
+import Link from 'next/link';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -58,7 +59,9 @@ const page: React.FC = () => {
             {/* Side Bar */}
             <Sider color='#fff' className='h-screen bg-stone-100 text-[13px]'>
                 <div className='items-center flex w-full justify-center'>
-                    <h1 className='h-full flex text-[1.5rem] font-roboto font-bold mt-10 tracking-wide'>DhonVeli</h1>
+                    <Link href={"/"} className='hover:text-orange-600'>
+                        <h1 className='h-full flex text-[1.5rem] font-roboto font-bold mt-10 tracking-wide'>DhonVeli</h1>
+                    </Link>
                 </div>
                 <div className='flex flex-col gap-3 px-3 mt-10'>
                     {menuItems.map((item, index) => (

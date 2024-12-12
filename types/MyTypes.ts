@@ -99,3 +99,26 @@ export type HotelBooking = {
         room_type_id: number,
     }[]
 }
+
+export type Activity = {
+    id: number;
+    name: string;
+    description: string | null | undefined;
+    price: number;
+}
+
+export type ActivityTicket = {
+    id: number | null | undefined;
+    bookingDate: string | null | undefined;
+    total_price: number;
+    activity_id: number;
+    activity: Activity | null;
+    user_id: number;
+    user: UserPublic | null;
+}
+
+export type BookActivityTicket = {
+    total_price: number;
+    activity_id: number;
+    user_id: number;
+}
