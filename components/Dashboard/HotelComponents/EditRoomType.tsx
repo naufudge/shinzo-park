@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
+import Loading from '@/components/Loading';
 
 
 interface EditRoomType {
@@ -34,7 +35,10 @@ interface EditRoomType {
 
 
 const EditRoomType: React.FC<EditRoomType> = ({isOpen, setIsOpen, roomTypeDetail}) => {
-
+    if (!roomTypeDetail) {
+        return <Loading />
+    }
+    
     const form = useForm<z.infer<typeof roomTypeUpdateFormSchema>>({
         resolver: zodResolver(roomTypeUpdateFormSchema),
         defaultValues: {
@@ -43,9 +47,9 @@ const EditRoomType: React.FC<EditRoomType> = ({isOpen, setIsOpen, roomTypeDetail
             bed_count: 0
         },
         values: {
-            name: roomTypeDetail!!.name,
-            price: roomTypeDetail!!.price,
-            bed_count: roomTypeDetail!!.bed_count
+            name: roomTypeDetail.name,
+            price: roomTypeDetail.price,
+            bed_count: roomTypeDetail.bed_count
         }
     })
 

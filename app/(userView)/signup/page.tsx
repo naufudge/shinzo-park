@@ -73,11 +73,11 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-[#B2EBF2]">
+    <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="bg-white w-[800px] rounded-xl shadow-lg flex overflow-hidden">
         {/* Information Section */}
-        <div className="w-1/2 bg-sky-950 text-white p-10">
-          <h2 className="text-3xl font-bold mb-6">Idk somekind of img</h2>
+        <div className="w-1/2 bg-sky-950 text-white p-10  ">
+          <h2 className="text-3xl font-bold mb-6">Sign up</h2>
           <p className="mb-6">
             Something
           </p>
@@ -145,7 +145,7 @@ export default function RegisterForm() {
             <div className="flex items-center">
               <input type="checkbox" id="terms" className="mr-2" />
               <label htmlFor="terms" className="text-sm">
-                I agree to the <a href="#" className="text-amber-500">Terms and Conditions of being a baka</a>
+                I agree to the <a href="#" className="text-amber-500">Terms and Conditions</a>
               </label>
             </div>
             

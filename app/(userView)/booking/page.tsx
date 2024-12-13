@@ -32,14 +32,14 @@ export default function ResortBooking() {
 
   return (
     <div className="bg-gray-100 flex flex-col overflow-x-clip">
-      <div className='relative 2xl:h-[800px] lg:h-[450px] h-[450px] mx-10 my-14 flex justify-center bg-black rounded-2xl'>
+      <div className='relative 2xl:h-[800px] lg:h-[400px] h-[400px] mx-10 my-14 flex justify-center bg-black rounded-2xl'>
         <div className="font-poppins absolute mx-auto 2xl:top-[40%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-center">
           <h1 className="drop-shadow-md text-[5rem] font-semibold font-dancing text-stone-50">
             Room Booking
           </h1>
           <p className="text-stone-100 italic">Experience something new every moment.</p>
         </div>
-        <Image alt="ride" className="w-full h-full object-cover bg-black blur-sm opacity-80 rounded-2xl" src={"/hotel-view.jpg"} width={2000} height={0} priority />
+        <Image alt="ride" className="w-full h-full object-cover bg-black blur-sm opacity-80 rounded-2xl" src={"/room.jpg"} width={2000} height={0} priority />
       </div>
 
       <div className="grid grid-cols-3 mx-10 gap-5">

@@ -7,7 +7,8 @@ export async function GET() {
 
         return NextResponse.json({
             success: true,
-            bookings: response.data
+            bookings: response.data,
+            status: response.status
         })
 
     } catch (error: any) {

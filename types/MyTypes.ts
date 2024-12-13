@@ -51,6 +51,15 @@ export type HotelRoom = {
     room_type: HotelRoomType
 }
 
+export type NewHotelRoom = {
+    id: number,
+    room_number: number,
+    occupied: boolean,
+    room_type_id: number,
+    room_type: HotelRoomType,
+    hotel: HotelType
+}
+
 export const hotelFormSchema = z.object({
     name: z.string().nullable(),
     rooms: z.array(

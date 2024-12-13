@@ -29,7 +29,7 @@ export default function SignInSignUp() {
   }
  
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-200">
+    <div className="flex h-screen items-center justify-center bg-gray-200 font-poppins">
       <div className="bg-white w-[600px] rounded-xl shadow-lg flex overflow-hidden"> 
         
         {/* Sign In Section */}

@@ -420,11 +420,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ setBookingData, onSubmit,
                         </PopoverContent>
                     </Popover>
                 </div>
-
-                <Button type="button" onClick={onSubmit} className='w-fit col-span-full'>Book now!</Button>
-
             </form>
-
         </div>
     )
 }

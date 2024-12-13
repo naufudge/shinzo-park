@@ -11,7 +11,7 @@ import {
 interface DashboardCardTypes {
     title: string;
     icon: React.JSX.Element;
-    content: string;
+    content: string | undefined;
     className?: string;
 }
 

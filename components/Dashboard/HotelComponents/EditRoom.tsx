@@ -25,7 +25,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { HotelRoom, HotelRoomType, roomAddingFormSchema } from '@/types/MyTypes';
+import { HotelRoom, HotelRoomType, NewHotelRoom, roomAddingFormSchema } from '@/types/MyTypes';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,7 +36,7 @@ interface EditRoom {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     roomTypes: HotelRoomType[] | null | undefined;
-    roomDetails: HotelRoom | null | undefined;
+    roomDetails: NewHotelRoom | null | undefined;
     updateHotel: () => void;
 }
 

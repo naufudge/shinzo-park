@@ -19,15 +19,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
+import { getUsers } from '@/lib/helpers';
 
 
 interface EditUser {
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
     userDetails: UserPublic | null | undefined;
+    setUsers: Dispatch<SetStateAction<UserPublic[] | undefined>>;
 }
 
-const EditUser: React.FC<EditUser> = ({ isOpen, setIsOpen, userDetails }) => {
+const EditUser: React.FC<EditUser> = ({ isOpen, setIsOpen, userDetails, setUsers }) => {
     const [selectedRole, setSelectedRole] = useState("")
 
     const handleSubmit = async () => {
@@ -41,7 +43,10 @@ const EditUser: React.FC<EditUser> = ({ isOpen, setIsOpen, userDetails }) => {
                 userUpdate
             }
             const response = await axios.post("/api/users/edit", data)
-            if (response.data.success) console.log("Successfully updated user!")
+            if (response.data.success) {
+                console.log("Successfully updated user!")
+                getUsers(setUsers)
+            }
         } catch (error: any) {
             console.log(error.message)
         } finally { setIsOpen(false) }

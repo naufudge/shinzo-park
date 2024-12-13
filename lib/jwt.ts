@@ -12,6 +12,9 @@ type UserTokenType = {
 const JWT_SECRET = process.env.TOKEN_SECRET;
 
 export const createToken = (user: UserTokenType): string => {
+  if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined");
+  }
   
   return jwt.sign(user, JWT_SECRET, { expiresIn: '1h' });
 };

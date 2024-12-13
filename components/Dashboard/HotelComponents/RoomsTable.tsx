@@ -21,20 +21,21 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";  
-import { HotelRoom, HotelRoomType } from '@/types/MyTypes';
+import { HotelRoom, HotelRoomType, NewHotelRoom } from '@/types/MyTypes';
 import { Pencil, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import EditRoom from './EditRoom';
+import Loading from '@/components/Loading';
 
 interface RoomsTable {
-    rooms: HotelRoom[] | undefined;
+    rooms: NewHotelRoom[] | undefined;
     roomTypes: HotelRoomType[] | null | undefined;
     updateHotel: () => void;
 }
 
 const RoomsTable: React.FC<RoomsTable> = ({ rooms, roomTypes, updateHotel }) => {
     const [editRoomIsOpen, setEditRoomIsOpen] = useState(false);
-    const [editingRoom, setEditingRoom] = useState<HotelRoom>()
+    const [editingRoom, setEditingRoom] = useState<NewHotelRoom>()
 
     const handleRoomDelete = async (room_id: number) => {
         try {
@@ -45,9 +46,13 @@ const RoomsTable: React.FC<RoomsTable> = ({ rooms, roomTypes, updateHotel }) => 
         }
     }
 
-    const handleEditClick = (room: HotelRoom) => {
+    const handleEditClick = (room: NewHotelRoom) => {
         setEditingRoom(room)
         setEditRoomIsOpen(true)
+    }
+
+    if (!rooms) {
+        return <Loading />
     }
 
     return (
@@ -61,7 +66,7 @@ const RoomsTable: React.FC<RoomsTable> = ({ rooms, roomTypes, updateHotel }) => 
             </TableRow>
         </TableHeader>
         <TableBody>
-            { rooms ? 
+            { rooms && 
                 <>
                 <EditRoom isOpen={editRoomIsOpen} setIsOpen={setEditRoomIsOpen} roomTypes={roomTypes!!} roomDetails={editingRoom} updateHotel={updateHotel} />
                 {rooms.map((room, index) => (
@@ -105,8 +110,6 @@ const RoomsTable: React.FC<RoomsTable> = ({ rooms, roomTypes, updateHotel }) => 
                     </TableRow>
                 ))}
                 </>
-            :
-            <TableRow><div className='mt-10 text-center italic opacity-50 w-full'>Loading...</div></TableRow>
         }
         </TableBody>
         </Table>

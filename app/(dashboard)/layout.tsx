@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Poppins, Roboto } from "next/font/google"
 import "@/app/globals.css";
-import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "Shinzo Park",
