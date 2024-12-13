@@ -1,7 +1,5 @@
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import React from "react";
-// import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-
 
 const Footer = () => {
   return (
@@ -12,7 +10,7 @@ const Footer = () => {
           <div>
             <h2 className="font-poppins text-white text-lg font-bold mb-4">About Us</h2>
             <p className="text-sm text-gray-400 leading-6">
-              Nauf will be dedicated to creating unforgettable experiences for our guests. Explore, enjoy, and make lasting memories with us!
+              We specialize in crafting unforgettable experiences. From thrilling adventures to serene moments, we’re here to help you create cherished memories that last a lifetime.
             </p>
           </div>
 
@@ -39,7 +37,7 @@ const Footer = () => {
           <div>
             <h2 className="font-poppins text-white text-lg font-bold mb-4">Follow Us</h2>
             <p className="text-sm text-gray-400 mb-4">
-              Stay connected and follow us on social media for the latest updates and promotions! (mostly naufs socials)
+              Stay connected with us on social media to catch the latest updates, news, and exclusive offers!
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -85,7 +83,7 @@ const Footer = () => {
           <p className="text-gray-400 mb-4 md:mb-0">&copy; 2024 FunZone. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#privacy" className="hover:text-white">
-              Privacy Policyd
+              Privacy Policy
             </a>
             <a href="#terms" className="hover:text-white">
               Terms of Service

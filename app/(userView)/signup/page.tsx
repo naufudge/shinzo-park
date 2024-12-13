@@ -76,13 +76,10 @@ export default function RegisterForm() {
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="bg-white w-[800px] rounded-xl shadow-lg flex overflow-hidden">
         {/* Information Section */}
-        <div className="w-1/2 bg-sky-950 text-white p-10  ">
-          <h2 className="text-3xl font-bold mb-6">Sign up</h2>
+        <div className="w-1/2 bg-sky-950 text-white p-10">
+          <h2 className="text-3xl font-bold mb-6">Already have an Acount</h2>
           <p className="mb-6">
-            Something
-          </p>
-          <p className="mb-8">
-            SOmeothin
+          Welcome back! We're thrilled to see you again. Click the button below to log in and continue exploring all the great features we have waiting for you."
           </p>
           <button
           onClick={() => router.push("/login")}
